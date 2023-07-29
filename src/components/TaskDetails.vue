@@ -17,3 +17,19 @@ const props = defineProps({
     </button>
   </li>
 </template>
+
+<style>
+.task {
+  list-style: none;
+  outline: 2px solid var(--color-border);
+}
+
+.task__text {
+  padding: 1em;
+}
+
+.task .btn {
+  background: var(--vt-c-accent);
+  padding: 0.5em;
+}
+</style>

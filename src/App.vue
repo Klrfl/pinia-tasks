@@ -17,15 +17,17 @@ const showWhichtasks = ref("all");
       width="125"
       height="125" />
 
-    <div class="wrapper">
-      <h1>Pinia tasks</h1>
-      <p>I'm learning Pinia!!</p>
-    </div>
+    <h1>Pinia tasks</h1>
+    <p>I'm learning Pinia!!</p>
   </header>
 
   <main>
-    <button @click="showWhichtasks = 'all'">All Tasks</button>
-    <button @click="showWhichtasks = 'completed'">Completed tasks</button>
+    <button class="btn btn--cta" @click="showWhichtasks = 'all'">
+      All Tasks
+    </button>
+    <button class="btn btn--cta" @click="showWhichtasks = 'completed'">
+      Completed tasks
+    </button>
 
     <ul class="task-list task-list--all" v-show="showWhichtasks === 'all'">
       <h2>Your tasks ({{ taskStore.totalTasksCount }})</h2>
@@ -45,3 +47,19 @@ const showWhichtasks = ref("all");
     </ul>
   </main>
 </template>
+
+<style>
+header {
+  text-align: center;
+}
+
+main {
+  max-width: 75ch;
+  margin-inline: auto;
+}
+
+.task-list {
+  margin: 0;
+  padding: 0;
+}
+</style>
