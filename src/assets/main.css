@@ -18,8 +18,21 @@ button {
   cursor: pointer;
 }
 
+button:focus-visible {
+  outline: 2px solid blue;
+}
+
+.btn {
+  display: block;
+  padding: 1rem;
+}
+
 @media (hover: hover) {
   a:hover {
     background-color: hsla(160, 100%, 37%, 0.2);
+  }
+
+  button:hover {
+    backdrop-filter: invert(0.2);
   }
 }
