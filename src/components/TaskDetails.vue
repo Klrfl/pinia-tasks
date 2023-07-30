@@ -10,30 +10,27 @@ const taskStore = useTaskStore();
 
 <template>
   <li :class="{ 'task--complete': task.isDone }" class="task">
+    <button
+      :class="{ 'task__favorite-btn--complete': task.isDone }"
+      class="btn task__done-btn"
+      @click="taskStore.completeTask(task.id)">
+      <i class="material-icons">done</i>
+    </button>
+
     <p class="task__text">
       {{ task.text }}
     </p>
-    <div class="task__btn-container">
-      <button
-        class="btn task__delete-btn"
-        @click="taskStore.deleteTask(task.id)">
-        <i class="material-icons">delete</i>
-      </button>
 
-      <button
-        :class="{ 'task__favorite-btn--complete': task.isDone }"
-        class="btn task__done-btn"
-        @click="taskStore.completeTask(task.id)">
-        <i class="material-icons">done</i>
-      </button>
+    <button class="btn task__delete-btn" @click="taskStore.deleteTask(task.id)">
+      <i class="material-icons">delete</i>
+    </button>
 
-      <button
-        :class="{ 'task__favorite-btn--fav': task.isFav }"
-        class="btn task__favorite-btn"
-        @click="taskStore.favTask(task.id)">
-        <i class="material-icons">favorite</i>
-      </button>
-    </div>
+    <button
+      :class="{ 'task__favorite-btn--fav': task.isFav }"
+      class="btn task__favorite-btn"
+      @click="taskStore.favTask(task.id)">
+      <i class="material-icons">favorite</i>
+    </button>
   </li>
 </template>
 
@@ -45,7 +42,6 @@ const taskStore = useTaskStore();
 
   display: flex;
   align-items: center;
-  gap: 0.5rem;
 
   position: relative;
 }
@@ -68,13 +64,8 @@ const taskStore = useTaskStore();
 
 .task__text {
   padding: 1em;
+  margin: 0;
   flex-grow: 1;
-}
-
-.task__btn-container {
-  display: flex;
-  justify-content: center;
-  gap: 0.5rem;
 }
 
 .task .btn {

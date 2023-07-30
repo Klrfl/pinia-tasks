@@ -75,7 +75,7 @@ const showWhichtasks = ref("all");
 <style>
 header,
 main {
-  padding: 2rem;
+  padding: 0.5rem;
 }
 
 header {
@@ -83,13 +83,18 @@ header {
 }
 
 main {
-  max-width: 120ch;
+  max-width: 85ch;
   margin-inline: auto;
 }
 
 .filter-btn-container {
+  overflow-x: auto;
   display: flex;
-  justify-content: flex-end;
+  justify-content: flex-start;
+}
+
+.filter-btn-container > * {
+  min-width: max-content;
 }
 
 .btn.active-filter {
@@ -99,5 +104,16 @@ main {
 .task-list {
   margin: 0;
   padding: 0;
+}
+
+@media scren and(min-width: 50em) {
+  header,
+  main {
+    padding: 2rem;
+  }
+
+  .filter-btn-container {
+    gap: 5rem;
+  }
 }
 </style>
