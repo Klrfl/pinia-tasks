@@ -23,4 +23,10 @@ export const useTaskStore = defineStore("taskStore", {
       }, 0);
     },
   },
+
+  actions: {
+    addTask(task) {
+      this.tasks.push(task);
+    },
+  },
 });

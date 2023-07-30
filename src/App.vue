@@ -1,6 +1,7 @@
 <script setup>
 import { ref } from "vue";
 import TaskDetails from "./components/TaskDetails.vue";
+import TaskForm from "./components/TaskForm.vue";
 import { useTaskStore } from "./stores/TaskStore";
 
 const taskStore = useTaskStore();
@@ -19,6 +20,7 @@ const showWhichtasks = ref("all");
 
     <h1>Pinia tasks</h1>
     <p>I'm learning Pinia!!</p>
+    <TaskForm></TaskForm>
   </header>
 
   <main>
