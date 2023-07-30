@@ -1,5 +1,6 @@
 /* color palette from <https://github.com/vuejs/theme> */
 :root {
+  color-scheme: light dark;
   --vt-c-accent: hsla(160, 100%, 37%, 1);
   --vt-c-white: #ffffff;
   --vt-c-white-soft: #f8f8f8;

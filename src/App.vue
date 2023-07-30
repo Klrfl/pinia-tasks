@@ -73,19 +73,23 @@ const showWhichtasks = ref("all");
 </template>
 
 <style>
+header,
+main {
+  padding: 2rem;
+}
+
 header {
   text-align: center;
 }
 
 main {
-  max-width: 75ch;
+  max-width: 120ch;
   margin-inline: auto;
 }
 
 .filter-btn-container {
   display: flex;
   justify-content: flex-end;
-  gap: 1rem;
 }
 
 .btn.active-filter {
