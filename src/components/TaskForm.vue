@@ -17,6 +17,8 @@ function handleSubmit() {
     isDone: false,
     isfav: false,
   });
+
+  taskText.value = "";
 }
 </script>
 
@@ -26,3 +28,16 @@ function handleSubmit() {
     <input type="submit" value="Add task" />
   </form>
 </template>
+
+<style>
+.task-form {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.task-form > * {
+  padding: 1rem;
+}
+</style>
