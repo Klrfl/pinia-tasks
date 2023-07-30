@@ -9,17 +9,29 @@ export const useTaskStore = defineStore("taskStore", {
   }),
 
   getters: {
-    completedTasks() {
-      return this.tasks.filter((task) => task.isDone);
-    },
     totalTasksCount() {
       return this.tasks.reduce((acc, currentTask) => {
         return currentTask ? acc + 1 : acc;
       }, 0);
     },
+
+    completedTasks() {
+      return this.tasks.filter((task) => task.isDone);
+    },
+
+    favoriteTasks() {
+      return this.tasks.filter((task) => task.isFav);
+    },
+
     totalCompletedTasksCount() {
       return this.tasks.reduce((acc, currentTask) => {
         return currentTask.isDone ? acc + 1 : acc;
+      }, 0);
+    },
+
+    totalFavoriteTasksCount() {
+      return this.tasks.reduce((acc, currentTask) => {
+        return currentTask.isFav ? acc + 1 : acc;
       }, 0);
     },
   },
@@ -27,6 +39,21 @@ export const useTaskStore = defineStore("taskStore", {
   actions: {
     addTask(task) {
       this.tasks.push(task);
+    },
+
+    deleteTask(taskId) {
+      const newTasks = this.tasks.filter((task) => task.id !== taskId);
+      this.tasks = newTasks;
+    },
+
+    completeTask(taskId) {
+      const completedTask = this.tasks.find((task) => task.id === taskId);
+      completedTask.isDone = !completedTask.isDone;
+    },
+
+    favTask(taskId) {
+      const favTask = this.tasks.find((task) => task.id === taskId);
+      favTask.isFav = !favTask.isFav;
     },
   },
 });
