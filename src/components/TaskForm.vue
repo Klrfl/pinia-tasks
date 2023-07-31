@@ -80,6 +80,8 @@ function getRandomTask() {
 .task-form__text {
   border: 2px solid var(--color-border);
   background: var(--color-background-soft);
+  flex-grow: 1;
+  max-width: 75ch;
 }
 
 .task-form__submit {
