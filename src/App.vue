@@ -27,7 +27,7 @@ onMounted(() => {
 
 <template>
   <header>
-    <button class="theme-toggle" @click="toggleTheme">
+    <button class="btn theme-toggle" @click="toggleTheme">
       <i class="material-icons" v-show="appTheme === 'light'"> light_mode </i>
       <i class="material-icons" v-show="appTheme === 'dark'"> dark_mode </i>
     </button>
@@ -110,6 +110,7 @@ main {
 
 header {
   text-align: center;
+  background: var(--color-background-mute);
 }
 
 main {

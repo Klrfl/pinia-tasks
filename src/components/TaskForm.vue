@@ -71,10 +71,19 @@ function getRandomTask() {
 }
 
 .task-form > * {
+  border: none;
+  background: transparent;
+  color: var(--color-text);
   padding: 1rem;
 }
 
+.task-form__text {
+  border: 2px solid var(--color-border);
+  background: var(--color-background-soft);
+}
+
 .task-form__submit {
+  outline: 2px solid var(--vt-c-accent);
   cursor: pointer;
 }
 </style>
