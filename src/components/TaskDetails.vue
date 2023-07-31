@@ -13,6 +13,7 @@ const taskStore = useTaskStore();
     <button
       :class="{ 'task__favorite-btn--complete': task.isDone }"
       class="btn task__done-btn"
+      title="mark task as done"
       @click="taskStore.completeTask(task.id)">
       <i class="material-icons">done</i>
     </button>
@@ -21,13 +22,17 @@ const taskStore = useTaskStore();
       {{ task.text }}
     </p>
 
-    <button class="btn task__delete-btn" @click="taskStore.deleteTask(task.id)">
+    <button
+      class="btn task__delete-btn"
+      title="delete task"
+      @click="taskStore.deleteTask(task.id)">
       <i class="material-icons">delete</i>
     </button>
 
     <button
       :class="{ 'task__favorite-btn--fav': task.isFav }"
       class="btn task__favorite-btn"
+      title="mark as favorite task"
       @click="taskStore.favTask(task.id)">
       <i class="material-icons">favorite</i>
     </button>
@@ -82,6 +87,6 @@ const taskStore = useTaskStore();
 }
 
 .task__favorite-btn--fav {
-  color: var(--vt-c-green);
+  color: rgb(203, 6, 6);
 }
 </style>

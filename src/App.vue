@@ -90,7 +90,7 @@ onMounted(() => {
     <ul
       class="task-list task-list--favorite"
       v-show="showWhichtasks === 'favorite'">
-      <h2>Completed tasks ({{ taskStore.totalFavoriteTasksCount }})</h2>
+      <h2>Favorite tasks ({{ taskStore.totalFavoriteTasksCount }})</h2>
       <p v-if="taskStore.totalFavoriteTasksCount === 0">
         No favorite tasks... yet
       </p>
@@ -105,12 +105,13 @@ onMounted(() => {
 <style>
 header,
 main {
-  padding: 0.5rem;
+  padding-block: 2rem;
+  padding-inline: 0.5rem;
 }
 
 header {
   text-align: center;
-  background: var(--color-background-mute);
+  background: var(--color-background-soft);
 }
 
 main {
@@ -119,6 +120,12 @@ main {
 }
 
 .filter-btn-container {
+  outline: 2px solid var(--color-border);
+  backdrop-filter: blur(0.5rem);
+  position: sticky;
+  top: 0.5rem;
+  z-index: 2;
+
   overflow-x: auto;
   display: flex;
   justify-content: flex-start;
@@ -133,23 +140,24 @@ main {
 }
 
 .btn.active-filter {
-  backdrop-filter: invert(0.2);
+  background: var(--color-background-mute);
   color: var(--color-text-bright);
 }
 
 .task-list {
   margin: 0;
   padding: 0;
+  min-height: 80vh;
 }
 
-@media scren and(min-width: 40em) {
+@media (min-width: 40em) {
   header,
   main {
-    padding: 2rem;
+    padding-inline: 2rem;
   }
 
   .filter-btn-container {
-    gap: 5rem;
+    gap: 0.5rem;
   }
 }
 </style>
