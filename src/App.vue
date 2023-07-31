@@ -47,7 +47,10 @@ const showWhichtasks = ref("all");
 
     <ul class="task-list task-list--all" v-show="showWhichtasks === 'all'">
       <h2>Your tasks ({{ taskStore.totalTasksCount }})</h2>
-      <TaskDetails v-for="task in taskStore.tasks" :task="task" />
+      <TaskDetails
+        v-for="task in taskStore.tasks"
+        :key="task.id"
+        :task="task" />
     </ul>
 
     <ul
@@ -57,7 +60,10 @@ const showWhichtasks = ref("all");
       <p v-if="taskStore.totalCompletedTasksCount === 0">
         No completed tasks... yet
       </p>
-      <TaskDetails v-for="task in taskStore.completedTasks" :task="task" />
+      <TaskDetails
+        v-for="task in taskStore.completedTasks"
+        :key="task.id"
+        :task="task" />
     </ul>
 
     <ul
@@ -67,7 +73,10 @@ const showWhichtasks = ref("all");
       <p v-if="taskStore.totalFavoriteTasksCount === 0">
         No favorite tasks... yet
       </p>
-      <TaskDetails v-for="task in taskStore.favoriteTasks" :task="task" />
+      <TaskDetails
+        v-for="task in taskStore.favoriteTasks"
+        :key="task.id"
+        :task="task" />
     </ul>
   </main>
 </template>
@@ -93,12 +102,17 @@ main {
   justify-content: flex-start;
 }
 
-.filter-btn-container > * {
+.filter-btn-container > .btn {
   min-width: max-content;
+}
+
+.filter-btn-container > .btn:hover {
+  color: var(--color-text-bright);
 }
 
 .btn.active-filter {
   backdrop-filter: invert(0.2);
+  color: var(--color-text-bright);
 }
 
 .task-list {
@@ -106,7 +120,7 @@ main {
   padding: 0;
 }
 
-@media scren and(min-width: 50em) {
+@media scren and(min-width: 40em) {
   header,
   main {
     padding: 2rem;

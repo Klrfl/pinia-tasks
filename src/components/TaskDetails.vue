@@ -73,6 +73,10 @@ const taskStore = useTaskStore();
   transition: color 0.4s ease;
 }
 
+.btn:hover {
+  color: var(--color-text-bright);
+}
+
 .task__favorite-btn--complete {
   color: var(--vt-c-accent);
 }
