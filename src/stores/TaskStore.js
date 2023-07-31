@@ -1,11 +1,12 @@
 import { defineStore } from "pinia";
 
+function getLocalTasks() {
+  return JSON.parse(localStorage.getItem("pinia-tasks")) || [];
+}
+
 export const useTaskStore = defineStore("taskStore", {
   state: () => ({
-    tasks: [
-      { id: 1, text: "Learn Pinia", isDone: false, isFav: false },
-      { id: 2, text: "Learn CSS Grid properly", isDone: false, isFav: false },
-    ],
+    tasks: getLocalTasks(),
   }),
 
   getters: {
@@ -37,23 +38,31 @@ export const useTaskStore = defineStore("taskStore", {
   },
 
   actions: {
+    saveTaskToLocalStorage() {
+      localStorage.setItem("pinia-tasks", JSON.stringify(this.tasks));
+    },
+
     addTask(task) {
       this.tasks.push(task);
+      this.saveTaskToLocalStorage();
     },
 
     deleteTask(taskId) {
       const newTasks = this.tasks.filter((task) => task.id !== taskId);
       this.tasks = newTasks;
+      this.saveTaskToLocalStorage();
     },
 
     completeTask(taskId) {
       const completedTask = this.tasks.find((task) => task.id === taskId);
       completedTask.isDone = !completedTask.isDone;
+      this.saveTaskToLocalStorage();
     },
 
     favTask(taskId) {
       const favTask = this.tasks.find((task) => task.id === taskId);
       favTask.isFav = !favTask.isFav;
+      this.saveTaskToLocalStorage();
     },
   },
 });
