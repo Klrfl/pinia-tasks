@@ -1,16 +1,37 @@
 <script setup>
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
 import TaskDetails from "./components/TaskDetails.vue";
 import TaskForm from "./components/TaskForm.vue";
-import { useTaskStore } from "./stores/TaskStore";
 
+import { useTaskStore } from "./stores/TaskStore";
+import { useAppThemeStore } from "./stores/AppThemeStore";
+
+const appThemeStore = useAppThemeStore();
 const taskStore = useTaskStore();
 
+const appTheme = ref("");
 const showWhichtasks = ref("all");
+
+function toggleTheme() {
+  appThemeStore.changeTheme(appTheme.value);
+  appTheme.value = appThemeStore.theme;
+
+  document.body.setAttribute("data-theme", appTheme.value);
+}
+
+onMounted(() => {
+  appTheme.value = localStorage.getItem("theme");
+  document.body.setAttribute("data-theme", appTheme.value);
+});
 </script>
 
 <template>
   <header>
+    <button class="theme-toggle" @click="toggleTheme">
+      <i class="material-icons" v-show="appTheme === 'light'"> light_mode </i>
+      <i class="material-icons" v-show="appTheme === 'dark'"> dark_mode </i>
+    </button>
+
     <img
       alt="Pinia logo"
       class="logo"
