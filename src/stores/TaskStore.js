@@ -1,6 +1,7 @@
 // TODO: add Firebase
 import { defineStore } from "pinia";
-import { initializeApp } from "firebase/app";
+import { app } from "../firebase/index.js";
+
 import {
   getFirestore,
   collection,
@@ -13,18 +14,6 @@ import {
   serverTimestamp,
   updateDoc,
 } from "firebase/firestore";
-
-const firebaseConfig = {
-  apiKey: "AIzaSyAcUAuCiDn1Lp3tQEaFewMIgHmQ9CdZi0E",
-  authDomain: "pinia-tasks-2b2da.firebaseapp.com",
-  projectId: "pinia-tasks-2b2da",
-  storageBucket: "pinia-tasks-2b2da.appspot.com",
-  messagingSenderId: "474366281228",
-  appId: "1:474366281228:web:c0804a2a755fa9749ad029",
-};
-
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
 
 const db = getFirestore(app);
 const tasksRef = collection(db, "tasks");
