@@ -35,7 +35,6 @@ function handleSubmit() {
   }
 
   taskStore.addTask({
-    id: Date.now(),
     text: taskText.value,
     isDone: false,
     isfav: false,
