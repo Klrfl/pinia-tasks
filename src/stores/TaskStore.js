@@ -8,6 +8,10 @@ import {
   addDoc,
   deleteDoc,
   doc,
+  query,
+  orderBy,
+  serverTimestamp,
+  updateDoc,
 } from "firebase/firestore";
 
 const firebaseConfig = {
@@ -24,6 +28,7 @@ const app = initializeApp(firebaseConfig);
 
 const db = getFirestore(app);
 const tasksRef = collection(db, "tasks");
+const q = query(tasksRef, orderBy("createdAt"));
 
 export const useTaskStore = defineStore("taskStore", {
   state: () => ({
@@ -61,7 +66,7 @@ export const useTaskStore = defineStore("taskStore", {
   actions: {
     getTasksFromFirestore() {
       try {
-        onSnapshot(tasksRef, (snapshot) => {
+        onSnapshot(q, (snapshot) => {
           const data = snapshot.docs;
           this.tasks = data.map((task) => {
             return { id: task.id, ...task.data() };
@@ -73,7 +78,7 @@ export const useTaskStore = defineStore("taskStore", {
     },
 
     async addTask(task) {
-      await addDoc(tasksRef, task);
+      await addDoc(tasksRef, { createdAt: serverTimestamp(), ...task });
     },
 
     async deleteTask(taskId) {
@@ -81,14 +86,18 @@ export const useTaskStore = defineStore("taskStore", {
       await deleteDoc(taskDocRef);
     },
 
-    completeTask(taskId) {
-      const completedTask = this.tasks.find((task) => task.id === taskId);
-      completedTask.isDone = !completedTask.isDone;
+    completeTask(task) {
+      const taskDocRef = doc(db, "tasks", task.id);
+      updateDoc(taskDocRef, {
+        isDone: !task.isDone,
+      });
     },
 
-    favTask(taskId) {
-      const favTask = this.tasks.find((task) => task.id === taskId);
-      favTask.isFav = !favTask.isFav;
+    favTask(task) {
+      const taskDocRef = doc(db, "tasks", task.id);
+      updateDoc(taskDocRef, {
+        isFav: !task.isFav,
+      });
     },
   },
 });
