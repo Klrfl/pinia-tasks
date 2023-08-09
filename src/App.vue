@@ -22,6 +22,7 @@ function toggleTheme() {
 onMounted(() => {
   appTheme.value = localStorage.getItem("theme");
   document.body.setAttribute("data-theme", appTheme.value);
+  taskStore.getTasksFromFirestore();
 });
 </script>
 
