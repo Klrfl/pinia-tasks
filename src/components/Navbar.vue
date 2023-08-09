@@ -1,7 +1,9 @@
 <script setup>
 import { ref, onMounted } from "vue";
 import { useAppThemeStore } from "../stores/AppThemeStore";
+import { useAuthStore } from "../stores/AuthStore";
 
+// app theme
 const appThemeStore = useAppThemeStore();
 const appTheme = ref("");
 
@@ -16,17 +18,32 @@ onMounted(() => {
   appTheme.value = localStorage.getItem("theme");
   document.body.setAttribute("data-theme", appTheme.value);
 });
+
+// auth
+const authStore = useAuthStore();
+
+function logOut() {
+  authStore.handleSignUserOut();
+}
 </script>
 
 <template>
   <nav>
-    <router-link :to="{ name: 'home' }">Home</router-link>
-    <router-link :to="{ name: 'sign-in' }">Sign in</router-link>
+    <div class="nav-links">
+      <router-link :to="{ name: 'home' }">Home</router-link>
+      <router-link :to="{ name: 'sign-in' }">Sign in</router-link>
+    </div>
 
-    <button class="btn theme-toggle" @click="toggleTheme">
-      <i class="material-icons" v-show="appTheme === 'light'"> light_mode </i>
-      <i class="material-icons" v-show="appTheme === 'dark'"> dark_mode </i>
-    </button>
+    <div class="nav-buttons">
+      <button class="btn theme-toggle" @click="toggleTheme">
+        <i class="material-icons" v-show="appTheme === 'light'"> light_mode </i>
+        <i class="material-icons" v-show="appTheme === 'dark'"> dark_mode </i>
+      </button>
+
+      <button @click="logOut" v-show="authStore.isLoggedIn">
+        {{ authStore.user.email }} Log out
+      </button>
+    </div>
   </nav>
 </template>
 
