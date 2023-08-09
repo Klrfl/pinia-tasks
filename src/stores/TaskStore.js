@@ -4,7 +4,7 @@ import { initializeApp } from "firebase/app";
 import {
   getFirestore,
   collection,
-  getDocs,
+  onSnapshot,
   addDoc,
   deleteDoc,
   doc,
@@ -21,13 +21,9 @@ const firebaseConfig = {
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
+
 const db = getFirestore(app);
-
 const tasksRef = collection(db, "tasks");
-
-function getLocalTasks() {
-  return JSON.parse(localStorage.getItem("pinia-tasks")) || [];
-}
 
 export const useTaskStore = defineStore("taskStore", {
   state: () => ({
@@ -63,36 +59,24 @@ export const useTaskStore = defineStore("taskStore", {
   },
 
   actions: {
-    async getTasksFromFirestore() {
+    getTasksFromFirestore() {
       try {
-        const response = await getDocs(tasksRef);
-        const data = response.docs;
-
-        const taskArr = data.map((task) => {
-          return { id: task.id, ...task.data() };
+        onSnapshot(tasksRef, (snapshot) => {
+          const data = snapshot.docs;
+          this.tasks = data.map((task) => {
+            return { id: task.id, ...task.data() };
+          });
         });
-
-        console.log(taskArr);
-        this.tasks = taskArr;
       } catch (err) {
         console.error(err.message);
       }
     },
 
-    // saveTaskToLocalStorage() {
-    //   localStorage.setItem("pinia-tasks", JSON.stringify(this.tasks));
-    // },
-
     async addTask(task) {
-      // this.tasks.push(task);
-      // this.saveTaskToLocalStorage();
       await addDoc(tasksRef, task);
     },
 
     async deleteTask(taskId) {
-      // const newTasks = this.tasks.filter((task) => task.id !== taskId);
-      // this.tasks = newTasks;
-      // this.saveTaskToLocalStorage();
       const taskDocRef = doc(db, "tasks", taskId);
       await deleteDoc(taskDocRef);
     },
@@ -100,13 +84,11 @@ export const useTaskStore = defineStore("taskStore", {
     completeTask(taskId) {
       const completedTask = this.tasks.find((task) => task.id === taskId);
       completedTask.isDone = !completedTask.isDone;
-      // this.saveTaskToLocalStorage();
     },
 
     favTask(taskId) {
       const favTask = this.tasks.find((task) => task.id === taskId);
       favTask.isFav = !favTask.isFav;
-      // this.saveTaskToLocalStorage();
     },
   },
 });
