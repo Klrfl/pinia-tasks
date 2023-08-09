@@ -14,7 +14,7 @@ const taskStore = useTaskStore();
       :class="{ 'task__favorite-btn--complete': task.isDone }"
       class="btn task__done-btn"
       title="mark task as done"
-      @click="taskStore.completeTask(task.id)">
+      @click="taskStore.completeTask(task)">
       <i class="material-icons">done</i>
     </button>
 
@@ -33,7 +33,7 @@ const taskStore = useTaskStore();
       :class="{ 'task__favorite-btn--fav': task.isFav }"
       class="btn task__favorite-btn"
       title="mark as favorite task"
-      @click="taskStore.favTask(task.id)">
+      @click="taskStore.favTask(task)">
       <i class="material-icons">favorite</i>
     </button>
   </li>
