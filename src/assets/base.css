@@ -82,3 +82,16 @@ h2 {
 p {
   margin-block: 1.125rem;
 }
+
+form input,
+form label {
+  display: block;
+}
+
+form input {
+  padding: 0.5rem;
+}
+
+form label {
+  padding-block: 1rem 0.25rem;
+}
