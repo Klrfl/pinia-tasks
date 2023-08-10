@@ -51,7 +51,18 @@ onMounted(() => {
       </button>
     </div>
 
-    <ul class="task-list task-list--all" v-show="showWhichtasks === 'all'">
+    <p
+      class="loading"
+      v-if="
+        taskStore.tasks.length === 0 && taskStore.errorMessage.length === 0
+      ">
+      Loading tasks...
+    </p>
+    <p class="message" v-if="taskStore.errorMessage.length">
+      {{ taskStore.errorMessage }}
+    </p>
+
+    <ul class="task-list task-list--all" v-if="showWhichtasks === 'all'">
       <h2>Your tasks ({{ taskStore.totalTasksCount }})</h2>
       <TaskDetails
         v-for="task in taskStore.tasks"
@@ -61,7 +72,7 @@ onMounted(() => {
 
     <ul
       class="task-list task-list--completed"
-      v-show="showWhichtasks === 'completed'">
+      v-if="showWhichtasks === 'completed'">
       <h2>Completed tasks ({{ taskStore.totalCompletedTasksCount }})</h2>
       <p v-if="taskStore.totalCompletedTasksCount === 0">
         No completed tasks... yet
@@ -74,7 +85,7 @@ onMounted(() => {
 
     <ul
       class="task-list task-list--favorite"
-      v-show="showWhichtasks === 'favorite'">
+      v-if="showWhichtasks === 'favorite'">
       <h2>Favorite tasks ({{ taskStore.totalFavoriteTasksCount }})</h2>
       <p v-if="taskStore.totalFavoriteTasksCount === 0">
         No favorite tasks... yet

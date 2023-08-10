@@ -21,6 +21,7 @@ const q = query(tasksRef, orderBy("createdAt"));
 
 export const useTaskStore = defineStore("taskStore", {
   state: () => ({
+    errorMessage: "",
     tasks: [],
   }),
 
@@ -62,6 +63,7 @@ export const useTaskStore = defineStore("taskStore", {
           });
         });
       } catch (err) {
+        this.errorMessage = err.message;
         console.error(err.message);
       }
     },

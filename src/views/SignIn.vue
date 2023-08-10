@@ -85,10 +85,13 @@ function handleLogIn() {
 
       <button @click="signUpOrLogIn">New user? Sign up</button>
     </div>
+    <p class="error" v-if="authStore.errorMessage.length !== 0">
+      {{ authStore.errorMessage }}
+    </p>
   </main>
 </template>
 
-<style>
+<style scoped>
 main {
   display: flex;
   justify-content: center;
