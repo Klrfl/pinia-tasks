@@ -1,13 +1,12 @@
 <script setup>
 import { ref } from "vue";
+import CTA from "../components/CTA.vue";
 import { useAuthStore } from "../stores/AuthStore.js";
 
 const signUp = ref(true);
-const logIn = ref(false);
 
 function signUpOrLogIn() {
   signUp.value = !signUp.value;
-  logIn.value = !logIn.value;
 }
 
 const authStore = useAuthStore();
@@ -28,7 +27,7 @@ function handleLogIn() {
   <main class="sign-in">
     <h1>
       <span v-show="signUp">Sign Up</span>
-      <span v-show="logIn">Log in</span>
+      <span v-show="!signUp">Log in</span>
     </h1>
 
     <p>Get to your tasks. Pinia Tasks.</p>
@@ -53,14 +52,12 @@ function handleLogIn() {
           placeholder="password"
           v-model="password"
           required />
-        <button type="submit">Sign up</button>
+        <CTA type="submit" class="btn--submit">Sign up</CTA>
       </form>
-
-      <button @click="signUpOrLogIn">Already a user? Log in</button>
     </div>
 
     <!-- log in for existing users -->
-    <div class="log-in-form-wrapper" v-show="logIn">
+    <div class="log-in-form-wrapper" v-show="!signUp">
       <form @submit.prevent="handleLogIn">
         <label for="email-login">Email</label>
         <input
@@ -80,11 +77,15 @@ function handleLogIn() {
           v-model="password"
           required />
 
-        <button type="submit">Log in</button>
+        <CTA type="submit" class="btn--submit">Log in</CTA>
       </form>
-
-      <button @click="signUpOrLogIn">New user? Sign up</button>
     </div>
+
+    <CTA @click="signUpOrLogIn">
+      <span v-show="!signUp">New to Pinia Tasks? Sign up for an account</span>
+      <span v-show="signUp">Already a user? Log in instead</span>
+    </CTA>
+
     <p class="error" v-if="authStore.errorMessage.length !== 0">
       {{ authStore.errorMessage }}
     </p>
@@ -101,6 +102,12 @@ main {
 
 form {
   background: var(--color-background-mute);
-  padding: 1rem;
+  padding: 1rem 2rem;
+}
+
+form > .btn--submit {
+  width: 100%;
+  text-align: center;
+  color: var(--vt-c-accent);
 }
 </style>
