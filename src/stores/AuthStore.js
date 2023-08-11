@@ -6,17 +6,32 @@ import {
   createUserWithEmailAndPassword,
   signOut,
   signInWithEmailAndPassword,
+  onAuthStateChanged,
 } from "firebase/auth";
+import router from "../router/index.js";
 
 const auth = getAuth(app);
 
 export const useAuthStore = defineStore("auth", {
   state: () => ({
     isLoggedIn: false,
-    user: {},
+    user: null,
+    errorMessage: "",
   }),
 
   actions: {
+    init() {
+      onAuthStateChanged(auth, (user) => {
+        if (user !== null) {
+          this.user = user;
+          router.push({ name: "home" });
+        } else {
+          this.user = null;
+          router.push({ name: "sign-in" });
+        }
+      });
+    },
+
     async handleUserSignUp(email, password) {
       try {
         const response = await createUserWithEmailAndPassword(
@@ -24,10 +39,12 @@ export const useAuthStore = defineStore("auth", {
           email,
           password
         );
-        this.isLoggedIn = true;
-        console.log("created new user");
+
         this.user = response.user;
+        this.isLoggedIn = true;
+        router.push({ name: "home" }); // redirect to home
       } catch (err) {
+        this.errorMessage = err.message;
         console.error(err.message);
       }
     },
@@ -39,10 +56,12 @@ export const useAuthStore = defineStore("auth", {
           email,
           password
         );
-        this.isLoggedIn = true;
+
         this.user = response.user;
-        console.log("log in successful");
+        this.isLoggedIn = true;
+        router.push({ name: "home" }); // redirect to home
       } catch (err) {
+        this.errorMessage = err.message;
         console.error(err.message);
       }
     },
@@ -50,18 +69,14 @@ export const useAuthStore = defineStore("auth", {
     async handleSignUserOut() {
       try {
         await signOut(auth);
-        console.log("you should be signed out now");
+
+        this.user = null;
         this.isLoggedIn = false;
-        this.user = {};
+        router.push({ name: "sign-in" });
       } catch (err) {
+        this.errorMessage = err.message;
         console.error(err.message);
       }
-    },
-  },
-
-  getters: {
-    userIsLoggedIn() {
-      return this.isLoggedIn;
     },
   },
 });
