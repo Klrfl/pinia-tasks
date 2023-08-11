@@ -1,6 +1,9 @@
 <script setup>
 import { ref } from "vue";
 import { useTaskStore } from "../stores/TaskStore";
+import { useAuthStore } from "../stores/AuthStore";
+
+const authStore = useAuthStore();
 
 const taskText = ref("");
 const taskStore = useTaskStore();
@@ -34,7 +37,7 @@ function handleSubmit() {
     return;
   }
 
-  taskStore.addTask({
+  taskStore.addTask(authStore.user.uid, {
     text: taskText.value,
     isDone: false,
     isfav: false,

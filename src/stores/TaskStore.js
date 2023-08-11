@@ -13,11 +13,12 @@ import {
   orderBy,
   serverTimestamp,
   updateDoc,
+  where,
 } from "firebase/firestore";
+import { useAuthStore } from "./AuthStore.js";
 
 const db = getFirestore(app);
 const tasksRef = collection(db, "tasks");
-const q = query(tasksRef, orderBy("createdAt"));
 
 export const useTaskStore = defineStore("taskStore", {
   state: () => ({
@@ -55,6 +56,14 @@ export const useTaskStore = defineStore("taskStore", {
 
   actions: {
     getTasksFromFirestore() {
+      const authStore = useAuthStore();
+      const userId = authStore.user.uid;
+      const q = query(
+        tasksRef,
+        where("userId", "==", userId),
+        orderBy("createdAt")
+      );
+
       try {
         onSnapshot(q, (snapshot) => {
           const data = snapshot.docs;
@@ -68,8 +77,12 @@ export const useTaskStore = defineStore("taskStore", {
       }
     },
 
-    async addTask(task) {
-      await addDoc(tasksRef, { createdAt: serverTimestamp(), ...task });
+    async addTask(uid, task) {
+      await addDoc(tasksRef, {
+        userId: uid,
+        createdAt: serverTimestamp(),
+        ...task,
+      });
     },
 
     async deleteTask(taskId) {
