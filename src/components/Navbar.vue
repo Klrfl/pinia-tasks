@@ -23,7 +23,12 @@ onMounted(() => {
 const authStore = useAuthStore();
 
 function logOut() {
-  authStore.handleSignUserOut();
+  try {
+    authStore.handleSignUserOut();
+  } catch (err) {
+    alert(err.message);
+    console.error(err.message);
+  }
 }
 </script>
 
@@ -31,16 +36,18 @@ function logOut() {
   <nav>
     <div class="nav-links">
       <router-link :to="{ name: 'home' }">Home</router-link>
-      <router-link :to="{ name: 'sign-in' }">Sign in</router-link>
+      <router-link :to="{ name: 'sign-in' }" v-if="!authStore.isLoggedIn"
+        >Sign in</router-link
+      >
     </div>
 
     <div class="nav-buttons">
       <button class="btn theme-toggle" @click="toggleTheme">
-        <i class="material-icons" v-show="appTheme === 'light'"> light_mode </i>
-        <i class="material-icons" v-show="appTheme === 'dark'"> dark_mode </i>
+        <i class="material-icons" v-if="appTheme === 'light'"> light_mode </i>
+        <i class="material-icons" v-if="appTheme === 'dark'"> dark_mode </i>
       </button>
 
-      <button @click="logOut" v-show="authStore.isLoggedIn">
+      <button @click="logOut" v-if="authStore.isLoggedIn">
         {{ authStore.user.email }} Log out
       </button>
     </div>
@@ -48,6 +55,12 @@ function logOut() {
 </template>
 
 <style>
+nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
 nav a {
   display: inline-block;
   padding: 1rem;
@@ -55,5 +68,9 @@ nav a {
 
 nav a:hover {
   backdrop-filter: invert(0.2);
+}
+
+.nav-buttons {
+  display: flex;
 }
 </style>
