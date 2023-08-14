@@ -27,11 +27,12 @@ export const useAuthStore = defineStore("auth", {
     async init() {
       onAuthStateChanged(auth, (user) => {
         if (user) {
-          console.log(user);
           this.user = user;
+          this.isLoggedIn = true;
           router.push({ name: "home" });
         } else {
-          this.user = null;
+          this.isLoggedIn = false;
+          this.handleAnonSignUp();
         }
       });
 
@@ -64,8 +65,6 @@ export const useAuthStore = defineStore("auth", {
     async handleUserLogIn(email, password) {
       try {
         await signInWithEmailAndPassword(auth, email, password);
-
-        this.isLoggedIn = true;
       } catch (err) {
         this.errorMessage = err.message;
         console.error(err.message);
@@ -75,7 +74,7 @@ export const useAuthStore = defineStore("auth", {
     async handleSignUserOut() {
       try {
         await signOut(auth);
-        this.isLoggedIn = false;
+        this.user = null;
         router.go();
       } catch (err) {
         this.errorMessage = err.message;
