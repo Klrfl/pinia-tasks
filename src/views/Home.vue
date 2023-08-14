@@ -13,10 +13,8 @@ const isLoading = ref(true);
 const showWhichtasks = ref("all");
 
 onMounted(async () => {
-  if (authStore.user === null) {
-    await authStore.handleAnonSignUp();
-  }
-  taskStore.getTasksFromFirestore();
+  await authStore.init();
+  await taskStore.getTasksFromFirestore();
   isLoading.value = false;
 });
 </script>
