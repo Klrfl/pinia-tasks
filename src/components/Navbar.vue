@@ -6,6 +6,7 @@ import { useAuthStore } from "../stores/AuthStore";
 // app theme
 const appThemeStore = useAppThemeStore();
 const appTheme = ref("");
+const authStore = useAuthStore();
 
 function toggleTheme() {
   appThemeStore.changeTheme(appTheme.value);
@@ -18,9 +19,6 @@ onMounted(() => {
   appTheme.value = localStorage.getItem("theme");
   document.body.setAttribute("data-theme", appTheme.value);
 });
-
-// auth
-const authStore = useAuthStore();
 
 async function logOut() {
   try {
@@ -36,9 +34,9 @@ async function logOut() {
   <nav>
     <div class="nav-links">
       <router-link :to="{ name: 'home' }">Home</router-link>
-      <router-link :to="{ name: 'sign-in' }" v-if="!authStore.isLoggedIn"
-        >Sign in</router-link
-      >
+      <router-link :to="{ name: 'sign-in' }" v-if="!authStore.isLoggedIn">
+        Sign in
+      </router-link>
     </div>
 
     <div class="nav-buttons">
@@ -48,7 +46,7 @@ async function logOut() {
       </button>
 
       <button @click="logOut" v-if="authStore.isLoggedIn">
-        {{ authStore.user?.email }} Sign out
+        {{ authStore.user.email }} Sign out
       </button>
     </div>
   </nav>
