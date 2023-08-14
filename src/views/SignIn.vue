@@ -52,7 +52,7 @@ function handleLogIn() {
           placeholder="password"
           v-model="password"
           required />
-        <CTA type="submit" class="btn--submit">Sign up</CTA>
+        <CTA type="submit" :center="true" :fill="true">Sign up</CTA>
       </form>
     </div>
 
@@ -77,7 +77,7 @@ function handleLogIn() {
           v-model="password"
           required />
 
-        <CTA type="submit" class="btn--submit">Log in</CTA>
+        <CTA type="submit" :center="true" :fill="true">Log in</CTA>
       </form>
     </div>
 
@@ -103,11 +103,5 @@ main {
 form {
   background: var(--color-background-mute);
   padding: 1rem 2rem;
-}
-
-form > .btn--submit {
-  width: 100%;
-  text-align: center;
-  color: var(--vt-c-accent);
 }
 </style>

@@ -37,19 +37,19 @@ onMounted(async () => {
     <div class="filter-btn-container">
       <button
         :class="{ 'active-filter': showWhichtasks === 'all' }"
-        class="btn btn--cta"
+        class="btn"
         @click="showWhichtasks = 'all'">
         All Tasks
       </button>
       <button
         :class="{ 'active-filter': showWhichtasks === 'completed' }"
-        class="btn btn--cta"
+        class="btn"
         @click="showWhichtasks = 'completed'">
         Completed tasks
       </button>
       <button
         :class="{ 'active-filter': showWhichtasks === 'favorite' }"
-        class="btn btn--cta"
+        class="btn"
         @click="showWhichtasks = 'favorite'">
         Favorite tasks
       </button>
@@ -153,10 +153,6 @@ main {
   header,
   main {
     padding-inline: 2rem;
-  }
-
-  .filter-btn-container {
-    gap: 0.5rem;
   }
 }
 </style>

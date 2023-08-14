@@ -1,5 +1,6 @@
 <script setup>
 import { ref, onMounted } from "vue";
+import CTA from "./CTA.vue";
 import { useAppThemeStore } from "../stores/AppThemeStore";
 import { useAuthStore } from "../stores/AuthStore";
 
@@ -20,7 +21,12 @@ onMounted(() => {
   document.body.setAttribute("data-theme", appTheme.value);
 });
 
-async function logOut() {
+const userPopup = ref(null);
+function toggleUserPopup() {
+  userPopup.value.classList.toggle("active");
+}
+
+async function signOut() {
   try {
     await authStore.handleSignUserOut();
   } catch (err) {
@@ -33,8 +39,11 @@ async function logOut() {
 <template>
   <nav>
     <div class="nav-links">
-      <router-link :to="{ name: 'home' }">Home</router-link>
-      <router-link :to="{ name: 'sign-in' }" v-if="!authStore.isLoggedIn">
+      <router-link class="btn" :to="{ name: 'home' }">Home</router-link>
+      <router-link
+        class="btn"
+        :to="{ name: 'sign-in' }"
+        v-if="!authStore.isLoggedIn">
         Sign in
       </router-link>
     </div>
@@ -45,8 +54,16 @@ async function logOut() {
         <i class="material-icons" v-if="appTheme === 'dark'"> dark_mode </i>
       </button>
 
-      <button @click="logOut" v-if="authStore.isLoggedIn">
-        {{ authStore.user.email }} Sign out
+      <button
+        class="btn nav-user-info"
+        @click="toggleUserPopup"
+        v-if="authStore.isLoggedIn">
+        <i class="material-icons">person</i>
+
+        <div class="user-popup" ref="userPopup">
+          <p>Signed in as {{ authStore.user.email }}</p>
+          <CTA :center="true" :fill="true" @click="signOut">Sign out</CTA>
+        </div>
       </button>
     </div>
   </nav>
@@ -61,14 +78,32 @@ nav {
 
 nav a {
   display: inline-block;
-  padding: 1rem;
 }
 
 nav a:hover {
   backdrop-filter: invert(0.2);
 }
 
+.nav-links,
 .nav-buttons {
   display: flex;
+}
+
+.nav-user-info {
+  position: relative;
+}
+
+.user-popup {
+  background: var(--color-background);
+  padding: 1rem;
+  display: none;
+  position: absolute;
+  top: 100%;
+  right: 1rem;
+  min-width: max-content;
+}
+
+.user-popup.active {
+  display: block;
 }
 </style>
