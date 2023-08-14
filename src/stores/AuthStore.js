@@ -3,10 +3,14 @@ import { defineStore } from "pinia";
 import { app } from "../firebase/index.js";
 import {
   getAuth,
-  createUserWithEmailAndPassword,
   signOut,
   signInWithEmailAndPassword,
   onAuthStateChanged,
+  setPersistence,
+  browserLocalPersistence,
+  signInAnonymously,
+  EmailAuthProvider,
+  linkWithCredential,
 } from "firebase/auth";
 import router from "../router/index.js";
 
@@ -20,29 +24,37 @@ export const useAuthStore = defineStore("auth", {
   }),
 
   actions: {
-    init() {
+    async init() {
       onAuthStateChanged(auth, (user) => {
-        if (user !== null) {
+        if (user) {
+          console.log(user);
           this.user = user;
           router.push({ name: "home" });
         } else {
           this.user = null;
-          router.push({ name: "sign-in" });
         }
       });
+
+      try {
+        await setPersistence(auth, browserLocalPersistence);
+      } catch (err) {
+        console.error(err.message);
+      }
+    },
+
+    async handleAnonSignUp() {
+      try {
+        await signInAnonymously(auth);
+      } catch (err) {
+        this.errorMessage = err.message;
+        console.error(err.message);
+      }
     },
 
     async handleUserSignUp(email, password) {
       try {
-        const response = await createUserWithEmailAndPassword(
-          auth,
-          email,
-          password
-        );
-
-        this.user = response.user;
-        this.isLoggedIn = true;
-        router.push({ name: "home" }); // redirect to home
+        const authCredential = EmailAuthProvider.credential(email, password);
+        await linkWithCredential(auth.currentUser, authCredential);
       } catch (err) {
         this.errorMessage = err.message;
         console.error(err.message);
@@ -51,15 +63,9 @@ export const useAuthStore = defineStore("auth", {
 
     async handleUserLogIn(email, password) {
       try {
-        const response = await signInWithEmailAndPassword(
-          auth,
-          email,
-          password
-        );
+        await signInWithEmailAndPassword(auth, email, password);
 
-        this.user = response.user;
         this.isLoggedIn = true;
-        router.push({ name: "home" }); // redirect to home
       } catch (err) {
         this.errorMessage = err.message;
         console.error(err.message);
@@ -69,10 +75,8 @@ export const useAuthStore = defineStore("auth", {
     async handleSignUserOut() {
       try {
         await signOut(auth);
-
-        this.user = null;
         this.isLoggedIn = false;
-        router.push({ name: "sign-in" });
+        router.go();
       } catch (err) {
         this.errorMessage = err.message;
         console.error(err.message);

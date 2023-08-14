@@ -5,13 +5,19 @@ import { ref, onMounted } from "vue";
 import TaskDetails from "../components/TaskDetails.vue";
 import TaskForm from "../components/TaskForm.vue";
 import { useTaskStore } from "../stores/TaskStore";
+import { useAuthStore } from "../stores/AuthStore";
 
 const taskStore = useTaskStore();
-
+const authStore = useAuthStore();
+const isLoading = ref(true);
 const showWhichtasks = ref("all");
 
-onMounted(() => {
+onMounted(async () => {
+  if (authStore.user === null) {
+    await authStore.handleAnonSignUp();
+  }
   taskStore.getTasksFromFirestore();
+  isLoading.value = false;
 });
 </script>
 
@@ -51,50 +57,49 @@ onMounted(() => {
       </button>
     </div>
 
-    <p
-      class="loading"
-      v-if="
-        taskStore.tasks.length === 0 && taskStore.errorMessage.length === 0
-      ">
-      Loading tasks...
-    </p>
-    <p class="message" v-if="taskStore.errorMessage.length">
-      {{ taskStore.errorMessage }}
-    </p>
-
-    <ul class="task-list task-list--all" v-if="showWhichtasks === 'all'">
+    <div class="task-list-container" v-if="showWhichtasks === 'all'">
       <h2>Your tasks ({{ taskStore.totalTasksCount }})</h2>
-      <TaskDetails
-        v-for="task in taskStore.tasks"
-        :key="task.id"
-        :task="task" />
-    </ul>
+      <ul class="task-list task-list--all">
+        <li class="message" v-show="taskStore.totalTasksCount === 0">
+          <span v-if="taskStore.errorMessage.length">
+            {{ taskStore.errorMessage }}
+          </span>
+          <span v-if="isLoading">Loading tasks...</span>
+          <span v-else>No tasks... yet</span>
+        </li>
 
-    <ul
-      class="task-list task-list--completed"
-      v-if="showWhichtasks === 'completed'">
+        <TaskDetails
+          v-for="task in taskStore.tasks"
+          :key="task.id"
+          :task="task" />
+      </ul>
+    </div>
+
+    <div class="task-list-container" v-if="showWhichtasks === 'completed'">
       <h2>Completed tasks ({{ taskStore.totalCompletedTasksCount }})</h2>
-      <p v-if="taskStore.totalCompletedTasksCount === 0">
-        No completed tasks... yet
-      </p>
-      <TaskDetails
-        v-for="task in taskStore.completedTasks"
-        :key="task.id"
-        :task="task" />
-    </ul>
+      <ul class="task-list task-list--completed">
+        <li v-show="taskStore.totalCompletedTasksCount === 0">
+          No completed tasks... yet
+        </li>
+        <TaskDetails
+          v-for="task in taskStore.completedTasks"
+          :key="task.id"
+          :task="task" />
+      </ul>
+    </div>
 
-    <ul
-      class="task-list task-list--favorite"
-      v-if="showWhichtasks === 'favorite'">
+    <div class="task-list-container" v-if="showWhichtasks === 'favorite'">
       <h2>Favorite tasks ({{ taskStore.totalFavoriteTasksCount }})</h2>
-      <p v-if="taskStore.totalFavoriteTasksCount === 0">
-        No favorite tasks... yet
-      </p>
-      <TaskDetails
-        v-for="task in taskStore.favoriteTasks"
-        :key="task.id"
-        :task="task" />
-    </ul>
+      <ul class="task-list task-list--favorite">
+        <li v-show="taskStore.totalFavoriteTasksCount === 0">
+          No favorite tasks... yet
+        </li>
+        <TaskDetails
+          v-for="task in taskStore.favoriteTasks"
+          :key="task.id"
+          :task="task" />
+      </ul>
+    </div>
   </main>
 </template>
 
