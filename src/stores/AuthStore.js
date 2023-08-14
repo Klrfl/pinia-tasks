@@ -28,7 +28,7 @@ export const useAuthStore = defineStore("auth", {
       onAuthStateChanged(auth, (user) => {
         if (user) {
           this.user = user;
-          this.isLoggedIn = true;
+          if (!user.isAnonymous) this.isLoggedIn = true;
           router.push({ name: "home" });
         } else {
           this.isLoggedIn = false;
