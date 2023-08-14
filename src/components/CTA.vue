@@ -1,12 +1,14 @@
+<script setup>
+const props = defineProps({
+  center: Boolean,
+  fill: Boolean,
+});
+</script>
+
 <template>
-  <button class="btn btn--cta">
+  <button
+    :class="{ 'btn--center': center, 'btn--fill': fill }"
+    class="btn btn--cta">
     <slot>Click me</slot>
   </button>
 </template>
-
-<style scoped>
-.btn--cta {
-  outline: 1px solid var(--vt-c-accent);
-  margin-block: 1rem;
-}
-</style>
