@@ -1,7 +1,6 @@
-// TODO: add Firebase
 import { defineStore } from "pinia";
-import { app } from "../firebase/index.js";
 
+import { app } from "../firebase/index.js";
 import {
   getFirestore,
   collection,
@@ -55,7 +54,7 @@ export const useTaskStore = defineStore("taskStore", {
   },
 
   actions: {
-    getTasksFromFirestore() {
+    async getTasksFromFirestore() {
       const authStore = useAuthStore();
       const userId = authStore.user.uid;
       const q = query(

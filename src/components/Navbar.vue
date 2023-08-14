@@ -22,9 +22,9 @@ onMounted(() => {
 // auth
 const authStore = useAuthStore();
 
-function logOut() {
+async function logOut() {
   try {
-    authStore.handleSignUserOut();
+    await authStore.handleSignUserOut();
   } catch (err) {
     alert(err.message);
     console.error(err.message);
@@ -48,7 +48,7 @@ function logOut() {
       </button>
 
       <button @click="logOut" v-if="authStore.isLoggedIn">
-        {{ authStore.user.email }} Log out
+        {{ authStore.user?.email }} Sign out
       </button>
     </div>
   </nav>
