@@ -23,7 +23,9 @@ onMounted(() => {
 
 const userPopup = ref(null);
 function toggleUserPopup() {
-  userPopup.value.classList.toggle("active");
+  if (authStore.isLoggedIn) {
+    userPopup.value.classList.toggle("active");
+  }
 }
 
 async function signOut() {
@@ -61,7 +63,7 @@ async function signOut() {
         <i class="material-icons">person</i>
 
         <div class="user-popup" ref="userPopup">
-          <p>Signed in as {{ authStore.user.email }}</p>
+          <p>Signed in as {{ authStore.user?.email }}</p>
           <CTA :center="true" :fill="true" @click="signOut">Sign out</CTA>
         </div>
       </button>
