@@ -5,16 +5,13 @@ import { ref, onMounted } from "vue";
 import TaskDetails from "../components/TaskDetails.vue";
 import TaskForm from "../components/TaskForm.vue";
 import { useTaskStore } from "../stores/TaskStore";
-import { useAuthStore } from "../stores/AuthStore";
 
 const taskStore = useTaskStore();
-const authStore = useAuthStore();
 const isLoading = ref(true);
 const showWhichtasks = ref("all");
 
-onMounted(async () => {
-  await authStore.init();
-  await taskStore.getTasksFromFirestore();
+onMounted(() => {
+  taskStore.getTasksFromFirestore();
   isLoading.value = false;
 });
 </script>
@@ -62,7 +59,7 @@ onMounted(async () => {
           <span v-if="taskStore.errorMessage.length">
             {{ taskStore.errorMessage }}
           </span>
-          <span v-if="isLoading">Loading tasks...</span>
+          <span v-else-if="isLoading">Loading tasks...</span>
           <span v-else>No tasks... yet</span>
         </li>
 

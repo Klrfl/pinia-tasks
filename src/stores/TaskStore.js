@@ -56,23 +56,28 @@ export const useTaskStore = defineStore("taskStore", {
   actions: {
     async getTasksFromFirestore() {
       const authStore = useAuthStore();
-      const userId = authStore.user.uid;
-      const q = query(
-        tasksRef,
-        where("userId", "==", userId),
-        orderBy("createdAt")
-      );
+      await authStore.init();
 
-      try {
-        onSnapshot(q, (snapshot) => {
-          const data = snapshot.docs;
-          this.tasks = data.map((task) => {
-            return { id: task.id, ...task.data() };
+      // check if user has already anonymously sign in (on startup, if they haven't logged in)
+      if (authStore.user) {
+        const userId = authStore.user.uid;
+        const q = query(
+          tasksRef,
+          where("userId", "==", userId),
+          orderBy("createdAt")
+        );
+
+        try {
+          onSnapshot(q, (snapshot) => {
+            const data = snapshot.docs;
+            this.tasks = data.map((task) => {
+              return { id: task.id, ...task.data() };
+            });
           });
-        });
-      } catch (err) {
-        this.errorMessage = err.message;
-        console.error(err.message);
+        } catch (err) {
+          this.errorMessage = err.message;
+          console.error(err.message);
+        }
       }
     },
 
