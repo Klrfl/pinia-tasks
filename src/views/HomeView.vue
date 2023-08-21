@@ -23,7 +23,8 @@ onMounted(() => {
       class="logo"
       :src="piniaLogo"
       width="125"
-      height="125" />
+      height="125"
+    />
 
     <h1>Pinia tasks</h1>
     <p>I'm learning Pinia!!</p>
@@ -35,19 +36,22 @@ onMounted(() => {
       <button
         :class="{ 'active-filter': showWhichtasks === 'all' }"
         class="btn"
-        @click="showWhichtasks = 'all'">
+        @click="showWhichtasks = 'all'"
+      >
         All Tasks
       </button>
       <button
         :class="{ 'active-filter': showWhichtasks === 'completed' }"
         class="btn"
-        @click="showWhichtasks = 'completed'">
+        @click="showWhichtasks = 'completed'"
+      >
         Completed tasks
       </button>
       <button
         :class="{ 'active-filter': showWhichtasks === 'favorite' }"
         class="btn"
-        @click="showWhichtasks = 'favorite'">
+        @click="showWhichtasks = 'favorite'"
+      >
         Favorite tasks
       </button>
     </div>
@@ -66,7 +70,8 @@ onMounted(() => {
         <TaskDetails
           v-for="task in taskStore.tasks"
           :key="task.id"
-          :task="task" />
+          :task="task"
+        />
       </ul>
     </div>
 
@@ -79,7 +84,8 @@ onMounted(() => {
         <TaskDetails
           v-for="task in taskStore.completedTasks"
           :key="task.id"
-          :task="task" />
+          :task="task"
+        />
       </ul>
     </div>
 
@@ -92,7 +98,8 @@ onMounted(() => {
         <TaskDetails
           v-for="task in taskStore.favoriteTasks"
           :key="task.id"
-          :task="task" />
+          :task="task"
+        />
       </ul>
     </div>
   </main>
