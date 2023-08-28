@@ -1,15 +1,15 @@
 <script setup>
-import { ref } from "vue";
+import { onMounted, ref } from "vue";
 import CTA from "../components/CTA.vue";
 import { useAuthStore } from "../stores/AuthStore.js";
+
+const authStore = useAuthStore();
 
 const signUp = ref(true);
 
 function signUpOrLogIn() {
   signUp.value = !signUp.value;
 }
-
-const authStore = useAuthStore();
 
 const email = ref("");
 const password = ref("");
@@ -21,6 +21,14 @@ function handleSignUp() {
 function handleLogIn() {
   authStore.handleUserLogIn(email.value, password.value);
 }
+
+function handleLogInWithGoogle() {
+  authStore.handleUserLogInWithGoogle();
+}
+
+onMounted(() => {
+  authStore.init();
+});
 </script>
 
 <template>
@@ -36,22 +44,10 @@ function handleLogIn() {
     <div class="sign-up-form-wrapper" v-show="signUp">
       <form class="sign-in-form" @submit.prevent="handleSignUp">
         <label for="email-signup">Email</label>
-        <input
-          type="email"
-          name="email"
-          id="email-signup"
-          placeholder="email"
-          v-model="email"
-          required />
+        <input type="email" name="email" id="email-signup" placeholder="email" v-model="email" required />
 
         <label for="password-signup">Password</label>
-        <input
-          type="password"
-          name="password"
-          id="password-signup"
-          placeholder="password"
-          v-model="password"
-          required />
+        <input type="password" name="password" id="password-signup" placeholder="password" v-model="password" required />
         <CTA type="submit" :center="true" :fill="true">Sign up</CTA>
       </form>
     </div>
@@ -60,26 +56,16 @@ function handleLogIn() {
     <div class="log-in-form-wrapper" v-show="!signUp">
       <form @submit.prevent="handleLogIn">
         <label for="email-login">Email</label>
-        <input
-          type="email"
-          name="email"
-          id="email-login"
-          placeholder="email"
-          v-model="email"
-          required />
+        <input type="email" name="email" id="email-login" placeholder="email" v-model="email" required />
 
         <label for="password-login">Password</label>
-        <input
-          type="password"
-          name="password"
-          id="password-login"
-          placeholder="password"
-          v-model="password"
-          required />
+        <input type="password" name="password" id="password-login" placeholder="password" v-model="password" required />
 
         <CTA type="submit" :center="true" :fill="true">Log in</CTA>
       </form>
     </div>
+
+    <CTA @click="handleLogInWithGoogle"><i class="fa-brands fa-google"></i> Log in with Google</CTA>
 
     <CTA @click="signUpOrLogIn">
       <span v-show="!signUp">New to Pinia Tasks? Sign up for an account</span>

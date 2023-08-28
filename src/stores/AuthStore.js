@@ -9,12 +9,16 @@ import {
   setPersistence,
   browserLocalPersistence,
   signInAnonymously,
+  GoogleAuthProvider,
   EmailAuthProvider,
   linkWithCredential,
+  signInWithRedirect,
+  getRedirectResult,
 } from "firebase/auth";
 import router from "../router/index.js";
 
 const auth = getAuth(app);
+const provider = new GoogleAuthProvider();
 
 export const useAuthStore = defineStore("auth", {
   state: () => ({
@@ -28,13 +32,20 @@ export const useAuthStore = defineStore("auth", {
       onAuthStateChanged(auth, (user) => {
         if (user) {
           this.user = user;
-          if (!user.isAnonymous) this.isLoggedIn = true;
+          if (user.isAnonymous) return;
+          this.isLoggedIn = true;
           router.push({ name: "home" });
         } else {
           this.isLoggedIn = false;
-          this.handleAnonSignUp();
+          this.handleAnonSignUp(); // make anon account on first load
         }
       });
+
+      try {
+        await getRedirectResult(auth);
+      } catch (err) {
+        console.error(err.message);
+      }
 
       try {
         await setPersistence(auth, browserLocalPersistence);
@@ -67,6 +78,14 @@ export const useAuthStore = defineStore("auth", {
         await signInWithEmailAndPassword(auth, email, password);
       } catch (err) {
         this.errorMessage = err.message;
+        console.error(err.message);
+      }
+    },
+
+    async handleUserLogInWithGoogle() {
+      try {
+        await signInWithRedirect(auth, provider);
+      } catch (err) {
         console.error(err.message);
       }
     },
