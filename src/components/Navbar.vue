@@ -42,26 +42,19 @@ async function signOut() {
   <nav>
     <div class="nav-links">
       <router-link class="btn" :to="{ name: 'home' }">Home</router-link>
-      <router-link
-        class="btn"
-        :to="{ name: 'sign-in' }"
-        v-if="!authStore.isLoggedIn">
+      <router-link class="btn" :to="{ name: 'sign-in' }" v-if="!authStore.isLoggedIn">
         Sign in
       </router-link>
     </div>
 
     <div class="nav-buttons">
       <button class="btn theme-toggle" @click="toggleTheme">
-        <i class="material-icons" v-if="appTheme === 'light'"> light_mode </i>
-        <i class="material-icons" v-if="appTheme === 'dark'"> dark_mode </i>
+        <i class="fa-solid fa-sun" v-if="appTheme === 'light'"></i>
+        <i class="fa-solid fa-moon" v-if="appTheme === 'dark'"></i>
       </button>
 
-      <button
-        class="btn nav-user-info"
-        @click="toggleUserPopup"
-        v-if="authStore.isLoggedIn">
-        <i class="material-icons">person</i>
-
+      <button class="btn nav-user-info" @click="toggleUserPopup" v-if="authStore.isLoggedIn">
+        <i class="fa-solid fa-user"></i>
         <div class="user-popup" ref="userPopup">
           <p>Signed in as {{ authStore.user?.email }}</p>
           <CTA :center="true" :fill="true" @click="signOut">Sign out</CTA>

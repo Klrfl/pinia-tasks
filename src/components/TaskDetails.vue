@@ -10,31 +10,22 @@ const taskStore = useTaskStore();
 
 <template>
   <li :class="{ 'task--complete': task.isDone }" class="task">
-    <button
-      :class="{ 'task__favorite-btn--complete': task.isDone }"
-      class="btn task__done-btn"
-      title="mark task as done"
+    <button :class="{ 'task__favorite-btn--complete': task.isDone }" class="btn task__done-btn" title="mark task as done"
       @click="taskStore.completeTask(task)">
-      <i class="material-icons">done</i>
+      <i class="fa-solid fa-check"></i>
     </button>
 
     <p class="task__text">
       {{ task.text }}
     </p>
 
-    <button
-      class="btn task__delete-btn"
-      title="delete task"
-      @click="taskStore.deleteTask(task.id)">
-      <i class="material-icons">delete</i>
+    <button class="btn task__delete-btn" title="delete task" @click="taskStore.deleteTask(task.id)">
+      <i class="fa-solid fa-trash"></i>
     </button>
 
-    <button
-      :class="{ 'task__favorite-btn--fav': task.isFav }"
-      class="btn task__favorite-btn"
-      title="mark as favorite task"
-      @click="taskStore.favTask(task)">
-      <i class="material-icons">favorite</i>
+    <button :class="{ 'task__favorite-btn--fav': task.isFav }" class="btn task__favorite-btn"
+      title="mark as favorite task" @click="taskStore.favTask(task)">
+      <i class="fa-solid fa-heart"></i>
     </button>
   </li>
 </template>
