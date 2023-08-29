@@ -10,21 +10,15 @@ const taskStore = useTaskStore();
 const isLoading = ref(true);
 const showWhichtasks = ref("all");
 
-onMounted(() => {
-  taskStore.getTasksFromFirestore();
+onMounted(async () => {
+  await taskStore.getTasksFromFirestore();
   isLoading.value = false;
 });
 </script>
 
 <template>
   <header>
-    <img
-      alt="Pinia logo"
-      class="logo"
-      :src="piniaLogo"
-      width="125"
-      height="125"
-    />
+    <img alt="Pinia logo" class="logo" :src="piniaLogo" width="125" height="125" />
 
     <h1>Pinia tasks</h1>
     <p>I'm learning Pinia!!</p>
@@ -33,25 +27,15 @@ onMounted(() => {
 
   <main>
     <div class="filter-btn-container">
-      <button
-        :class="{ 'active-filter': showWhichtasks === 'all' }"
-        class="btn"
-        @click="showWhichtasks = 'all'"
-      >
+      <button :class="{ 'active-filter': showWhichtasks === 'all' }" class="btn" @click="showWhichtasks = 'all'">
         All Tasks
       </button>
-      <button
-        :class="{ 'active-filter': showWhichtasks === 'completed' }"
-        class="btn"
-        @click="showWhichtasks = 'completed'"
-      >
+      <button :class="{ 'active-filter': showWhichtasks === 'completed' }" class="btn"
+        @click="showWhichtasks = 'completed'">
         Completed tasks
       </button>
-      <button
-        :class="{ 'active-filter': showWhichtasks === 'favorite' }"
-        class="btn"
-        @click="showWhichtasks = 'favorite'"
-      >
+      <button :class="{ 'active-filter': showWhichtasks === 'favorite' }" class="btn"
+        @click="showWhichtasks = 'favorite'">
         Favorite tasks
       </button>
     </div>
@@ -67,11 +51,7 @@ onMounted(() => {
           <span v-else>No tasks... yet</span>
         </li>
 
-        <TaskDetails
-          v-for="task in taskStore.tasks"
-          :key="task.id"
-          :task="task"
-        />
+        <TaskDetails v-for="task in taskStore.tasks" :key="task.id" :task="task" />
       </ul>
     </div>
 
@@ -81,11 +61,7 @@ onMounted(() => {
         <li v-show="taskStore.totalCompletedTasksCount === 0">
           No completed tasks... yet
         </li>
-        <TaskDetails
-          v-for="task in taskStore.completedTasks"
-          :key="task.id"
-          :task="task"
-        />
+        <TaskDetails v-for="task in taskStore.completedTasks" :key="task.id" :task="task" />
       </ul>
     </div>
 
@@ -95,11 +71,7 @@ onMounted(() => {
         <li v-show="taskStore.totalFavoriteTasksCount === 0">
           No favorite tasks... yet
         </li>
-        <TaskDetails
-          v-for="task in taskStore.favoriteTasks"
-          :key="task.id"
-          :task="task"
-        />
+        <TaskDetails v-for="task in taskStore.favoriteTasks" :key="task.id" :task="task" />
       </ul>
     </div>
   </main>
@@ -134,11 +106,11 @@ main {
   justify-content: flex-start;
 }
 
-.filter-btn-container > .btn {
+.filter-btn-container>.btn {
   min-width: max-content;
 }
 
-.filter-btn-container > .btn:hover {
+.filter-btn-container>.btn:hover {
   color: var(--color-text-bright);
 }
 
@@ -154,6 +126,7 @@ main {
 }
 
 @media (min-width: 40em) {
+
   header,
   main {
     padding-inline: 2rem;

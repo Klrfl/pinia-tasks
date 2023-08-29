@@ -80,4 +80,16 @@ const taskStore = useTaskStore();
 .task__favorite-btn--fav {
   color: rgb(203, 6, 6);
 }
+
+@media (hover: hover) {
+  .task__delete-btn {
+    opacity: 0;
+    transition: opacity 200ms ease;
+  }
+
+  .task:hover .task__delete-btn,
+  .task__delete-btn:focus-visible {
+    opacity: 1;
+  }
+}
 </style>
