@@ -4,9 +4,12 @@ import piniaLogo from "../assets/pinia.svg";
 import { ref, onMounted } from "vue";
 import TaskDetails from "../components/TaskDetails.vue";
 import TaskForm from "../components/TaskForm.vue";
-import { useTaskStore } from "../stores/TaskStore";
+import { useTaskStore } from "../stores/TaskStore.js";
+import { useAuthStore } from "../stores/AuthStore.js";
 
 const taskStore = useTaskStore();
+const authStore = useAuthStore();
+
 const isLoading = ref(true);
 const showWhichtasks = ref("all");
 
@@ -21,7 +24,11 @@ onMounted(async () => {
     <img alt="Pinia logo" class="logo" :src="piniaLogo" width="125" height="125" />
 
     <h1>Pinia tasks</h1>
-    <p>I'm learning Pinia!!</p>
+    <p v-if="authStore.user?.isAnonymous || isLoading">
+      Welcome to Pinia Tasks!!
+    </p>
+    <p v-else>Welcome, {{ authStore.user?.providerData[0].displayName }}!</p>
+
     <TaskForm></TaskForm>
   </header>
 
@@ -58,7 +65,7 @@ onMounted(async () => {
     <div class="task-list-container" v-if="showWhichtasks === 'completed'">
       <h2>Completed tasks ({{ taskStore.totalCompletedTasksCount }})</h2>
       <ul class="task-list task-list--completed">
-        <li v-show="taskStore.totalCompletedTasksCount === 0">
+        <li class="message" v-show="taskStore.totalCompletedTasksCount === 0">
           No completed tasks... yet
         </li>
         <TaskDetails v-for="task in taskStore.completedTasks" :key="task.id" :task="task" />
@@ -68,7 +75,7 @@ onMounted(async () => {
     <div class="task-list-container" v-if="showWhichtasks === 'favorite'">
       <h2>Favorite tasks ({{ taskStore.totalFavoriteTasksCount }})</h2>
       <ul class="task-list task-list--favorite">
-        <li v-show="taskStore.totalFavoriteTasksCount === 0">
+        <li class="message" v-show="taskStore.totalFavoriteTasksCount === 0">
           No favorite tasks... yet
         </li>
         <TaskDetails v-for="task in taskStore.favoriteTasks" :key="task.id" :task="task" />
@@ -122,7 +129,13 @@ main {
 .task-list {
   margin: 0;
   padding: 0;
+  list-style: none;
   min-height: 80vh;
+}
+
+.message {
+  text-align: center;
+  color: var(--color-text-mute);
 }
 
 @media (min-width: 40em) {
