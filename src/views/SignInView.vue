@@ -26,6 +26,10 @@ function handleLogInWithGoogle() {
   authStore.handleUserLogInWithGoogle();
 }
 
+function handleSignInWithGoogle() {
+  authStore.handleUserSignInWithGoogle();
+}
+
 onMounted(() => {
   authStore.init();
 });
@@ -50,6 +54,8 @@ onMounted(() => {
         <input type="password" name="password" id="password-signup" placeholder="password" v-model="password" required />
         <CTA type="submit" :center="true" :fill="true">Sign up</CTA>
       </form>
+
+      <CTA @click="handleSignInWithGoogle"><i class="fa-brands fa-google"></i> Sign in with Google</CTA>
     </div>
 
     <!-- log in for existing users -->
@@ -63,9 +69,8 @@ onMounted(() => {
 
         <CTA type="submit" :center="true" :fill="true">Log in</CTA>
       </form>
+      <CTA @click="handleLogInWithGoogle"><i class="fa-brands fa-google"></i> Log in with Google</CTA>
     </div>
-
-    <CTA @click="handleLogInWithGoogle"><i class="fa-brands fa-google"></i> Log in with Google</CTA>
 
     <CTA @click="signUpOrLogIn">
       <span v-show="!signUp">New to Pinia Tasks? Sign up for an account</span>

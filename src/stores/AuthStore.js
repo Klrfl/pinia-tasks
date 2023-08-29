@@ -14,6 +14,7 @@ import {
   linkWithCredential,
   signInWithRedirect,
   getRedirectResult,
+  linkWithRedirect,
 } from "firebase/auth";
 import router from "../router/index.js";
 
@@ -86,6 +87,16 @@ export const useAuthStore = defineStore("auth", {
       try {
         await signInWithRedirect(auth, provider);
       } catch (err) {
+        console.error(err.message);
+      }
+    },
+
+    // link anon acc with Google
+    async handleUserSignInWithGoogle() {
+      try {
+        linkWithRedirect(auth.currentUser, provider);
+      } catch (err) {
+        this.errorMessage = err.message;
         console.error(err.message);
       }
     },
