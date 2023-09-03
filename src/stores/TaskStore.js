@@ -89,6 +89,13 @@ export const useTaskStore = defineStore("taskStore", {
       });
     },
 
+    async saveNewTask(task) {
+      const taskDocRef = doc(db, "tasks", task.id);
+      await updateDoc(taskDocRef, {
+        text: task.text,
+      });
+    },
+
     async deleteTask(taskId) {
       const taskDocRef = doc(db, "tasks", taskId);
       await deleteDoc(taskDocRef);
