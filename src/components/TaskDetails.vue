@@ -41,7 +41,7 @@ function saveTask(task) {
 <template>
   <li :class="{ 'task--complete': task.isDone }" class="task">
     <form class="task__form" @submit.prevent="saveTask(task)">
-      <input type="text" v-model="task.text" :disabled="!isEditingTask" ref="textInput" />
+      <input type="text" class="task__text" v-model="task.text" :disabled="!isEditingTask" ref="textInput" />
 
       <div class="task__btn-container" v-if="isEditingTask">
         <button type="submit" class="btn task__edit-done-btn" title="save new task">
@@ -91,7 +91,7 @@ function saveTask(task) {
   position: relative;
 }
 
-.task--complete {
+.task--complete input[disabled] {
   text-decoration: line-through;
 }
 
@@ -119,11 +119,10 @@ function saveTask(task) {
 }
 
 .task__form input {
-  all: unset;
   background: var(--color-background-soft);
-  width: 100%;
   padding: 1em;
   color: inherit;
+  flex-grow: 1;
 }
 
 .task__form input[disabled] {
@@ -152,7 +151,7 @@ function saveTask(task) {
   color: rgb(203, 6, 6);
 }
 
-@media (hover: hover) {
+@media (hover: hover) and (min-width: 40em) {
 
   .task__delete-btn,
   .task__edit-btn {
@@ -165,6 +164,27 @@ function saveTask(task) {
   .task:hover .task__edit-btn,
   .task__edit-btn:focus-visible {
     opacity: 1;
+  }
+}
+
+@media screen and (max-width: 40em) {
+  .task__form {
+    flex-direction: column;
+  }
+
+  .task__form input,
+  .task__btn-container {
+    flex: 1 1 0;
+    width: 100%;
+  }
+
+  .task__btn-container {
+    justify-content: space-evenly;
+  }
+
+  .task__btn-container>* {
+    flex: 1;
+    text-align: center;
   }
 }
 </style>

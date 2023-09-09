@@ -88,6 +88,11 @@ p {
   margin-block: 1.125rem;
 }
 
+input {
+  all: unset;
+  box-sizing: border-box;
+}
+
 form input,
 form label {
   display: block;
