@@ -104,7 +104,7 @@ function saveTask(task) {
 }
 
 .task--complete::after {
-  background: var(--vt-c-accent);
+  background: var(--accent);
 }
 
 .task__text {
@@ -145,7 +145,7 @@ function saveTask(task) {
 }
 
 .task__favorite-btn--complete {
-  color: var(--vt-c-accent);
+  color: var(--accent);
 }
 
 .task__favorite-btn--fav {

@@ -7,7 +7,7 @@
 
 a {
   text-decoration: none;
-  color: var(--vt-c-accent);
+  color: var(--accent);
   transition: color 0.4s;
 }
 
@@ -27,7 +27,7 @@ button:focus-visible {
 }
 
 .btn--cta {
-  outline: 1px solid var(--vt-c-accent);
+  outline: 1px solid var(--accent);
   margin-block: 1rem;
 }
 

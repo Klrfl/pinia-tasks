@@ -88,7 +88,6 @@ onMounted(async () => {
 header,
 main {
   padding-block: 2rem;
-  padding-inline: 0.5rem;
 }
 
 header {
@@ -99,6 +98,7 @@ header {
 main {
   max-width: 85ch;
   margin-inline: auto;
+  padding-inline: 2rem;
 }
 
 .filter-btn-container {

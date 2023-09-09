@@ -54,17 +54,17 @@ function getRandomTask() {
 
 <template>
   <form class="task-form" @submit.prevent="handleSubmit">
-    <input
-      class="task-form__text"
-      type="text"
-      :placeholder="getRandomTask()"
-      v-model="taskText" />
+    <input class="task-form__text" type="text" :placeholder="getRandomTask()" v-model="taskText" />
     <input class="task-form__submit" type="submit" value="Add task" />
   </form>
 </template>
 
 <style>
 .task-form {
+  max-width: 85ch;
+  margin-inline: auto;
+  padding: 2rem;
+
   display: flex;
   justify-content: center;
   align-items: center;
@@ -72,7 +72,7 @@ function getRandomTask() {
   gap: 0.5rem;
 }
 
-.task-form > * {
+.task-form>* {
   border: none;
   background: transparent;
   color: var(--color-text);
@@ -82,12 +82,13 @@ function getRandomTask() {
 .task-form__text {
   border: 2px solid var(--color-border);
   background: var(--color-background-soft);
-  flex-grow: 1;
+  flex-grow: 8;
   max-width: 75ch;
 }
 
 .task-form__submit {
-  outline: 2px solid var(--vt-c-accent);
+  flex-grow: 1;
+  outline: 2px solid var(--accent);
   cursor: pointer;
 }
 </style>
