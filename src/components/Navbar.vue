@@ -36,13 +36,29 @@ async function signOut() {
     console.error(err.message);
   }
 }
+
+const deleteAccountDialog = ref(null);
+
+function openDeleteAccountDialog() {
+  deleteAccountDialog.value.showModal();
+}
+
+function deleteAccount() {
+  const returnValue = deleteAccountDialog.value.returnValue;
+  if (returnValue == "default") deleteAccountDialog.value.close();
+  else console.log("deleting account...");
+}
 </script>
 
 <template>
   <nav>
     <div class="nav-links">
       <router-link class="btn" :to="{ name: 'home' }">Home</router-link>
-      <router-link class="btn" :to="{ name: 'sign-in' }" v-if="!authStore.isLoggedIn">
+      <router-link
+        class="btn"
+        :to="{ name: 'sign-in' }"
+        v-if="!authStore.isLoggedIn"
+      >
         Sign in
       </router-link>
     </div>
@@ -53,13 +69,37 @@ async function signOut() {
         <i class="fa-solid fa-moon" v-if="appTheme === 'dark'"></i>
       </button>
 
-      <button class="btn nav-user-info" @click="toggleUserPopup" v-if="authStore.isLoggedIn">
+      <button
+        class="btn nav-user-info"
+        @click="toggleUserPopup"
+        v-if="authStore.isLoggedIn"
+      >
         <i class="fa-solid fa-user"></i>
         <div class="user-popup" ref="userPopup">
           <p>Signed in as {{ authStore.user?.email }}</p>
           <CTA :center="true" :fill="true" @click="signOut">Sign out</CTA>
+          <CTA :center="true" :fill="true" @click="openDeleteAccountDialog">
+            Delete account
+          </CTA>
         </div>
       </button>
+
+      <dialog
+        ref="deleteAccountDialog"
+        class="delete-account-dialog"
+        @close="deleteAccount"
+      >
+        <form method="dialog">
+          <h1>THIS ACTION IS IRREVERSIBLE!</h1>
+          <p>
+            Are you sure you want to delete your account?
+            <strong> Your tasks will be deleted too. </strong>
+          </p>
+
+          <CTA :fill="true" value="delete-account">Yes i am sure</CTA>
+          <CTA :fill="true" value="default" autofocus>Nah nevermind</CTA>
+        </form>
+      </dialog>
     </div>
   </nav>
 </template>
@@ -100,5 +140,19 @@ nav a:hover {
 
 .user-popup.active {
   display: block;
+}
+
+.delete-account-dialog {
+  border: 2px solid var(--color-border);
+  margin: auto;
+  padding: 2rem;
+  background: var(--color-background);
+  color: inherit;
+  text-align: center;
+  max-width: 75ch;
+}
+
+.delete-account-dialog::backdrop {
+  backdrop-filter: blur(0.5rem);
 }
 </style>
