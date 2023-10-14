@@ -21,28 +21,46 @@ onMounted(async () => {
 
 <template>
   <header>
-    <img alt="Pinia logo" class="logo" :src="piniaLogo" width="125" height="125" />
+    <div class="header__content">
+      <img
+        alt="Pinia logo"
+        class="logo"
+        :src="piniaLogo"
+        width="125"
+        height="125"
+      />
 
-    <h1>Pinia tasks</h1>
-    <p v-if="authStore.user?.isAnonymous || isLoading">
-      Welcome to Pinia Tasks!!
-    </p>
-    <p v-else>Welcome, {{ authStore.user?.providerData[0].displayName }}!</p>
+      <h1>Pinia tasks</h1>
+      <p v-if="authStore.user?.isAnonymous || isLoading">
+        Welcome to Pinia Tasks!!
+      </p>
+      <p v-else>Welcome, {{ authStore.user?.providerData[0].displayName }}!</p>
 
-    <TaskForm></TaskForm>
+      <TaskForm />
+    </div>
   </header>
 
   <main>
     <div class="filter-btn-container">
-      <button :class="{ 'active-filter': showWhichtasks === 'all' }" class="btn" @click="showWhichtasks = 'all'">
+      <button
+        :class="{ 'active-filter': showWhichtasks === 'all' }"
+        class="btn"
+        @click="showWhichtasks = 'all'"
+      >
         All Tasks
       </button>
-      <button :class="{ 'active-filter': showWhichtasks === 'completed' }" class="btn"
-        @click="showWhichtasks = 'completed'">
+      <button
+        :class="{ 'active-filter': showWhichtasks === 'completed' }"
+        class="btn"
+        @click="showWhichtasks = 'completed'"
+      >
         Completed tasks
       </button>
-      <button :class="{ 'active-filter': showWhichtasks === 'favorite' }" class="btn"
-        @click="showWhichtasks = 'favorite'">
+      <button
+        :class="{ 'active-filter': showWhichtasks === 'favorite' }"
+        class="btn"
+        @click="showWhichtasks = 'favorite'"
+      >
         Favorite tasks
       </button>
     </div>
@@ -58,7 +76,11 @@ onMounted(async () => {
           <span v-else>No tasks... yet</span>
         </li>
 
-        <TaskDetails v-for="task in taskStore.tasks" :key="task.id" :task="task" />
+        <TaskDetails
+          v-for="task in taskStore.tasks"
+          :key="task.id"
+          :task="task"
+        />
       </ul>
     </div>
 
@@ -68,7 +90,11 @@ onMounted(async () => {
         <li class="message" v-show="taskStore.totalCompletedTasksCount === 0">
           No completed tasks... yet
         </li>
-        <TaskDetails v-for="task in taskStore.completedTasks" :key="task.id" :task="task" />
+        <TaskDetails
+          v-for="task in taskStore.completedTasks"
+          :key="task.id"
+          :task="task"
+        />
       </ul>
     </div>
 
@@ -78,27 +104,27 @@ onMounted(async () => {
         <li class="message" v-show="taskStore.totalFavoriteTasksCount === 0">
           No favorite tasks... yet
         </li>
-        <TaskDetails v-for="task in taskStore.favoriteTasks" :key="task.id" :task="task" />
+        <TaskDetails
+          v-for="task in taskStore.favoriteTasks"
+          :key="task.id"
+          :task="task"
+        />
       </ul>
     </div>
   </main>
 </template>
 
 <style>
-header,
+.header__content,
 main {
-  padding-block: 2rem;
+  max-width: 120ch;
+  margin-inline: auto;
+  padding: 2rem;
 }
 
 header {
   text-align: center;
   background: var(--color-background-soft);
-}
-
-main {
-  max-width: 85ch;
-  margin-inline: auto;
-  padding-inline: 2rem;
 }
 
 .filter-btn-container {
@@ -113,11 +139,11 @@ main {
   justify-content: flex-start;
 }
 
-.filter-btn-container>.btn {
+.filter-btn-container > .btn {
   min-width: max-content;
 }
 
-.filter-btn-container>.btn:hover {
+.filter-btn-container > .btn:hover {
   color: var(--color-text-bright);
 }
 
@@ -136,13 +162,5 @@ main {
 .message {
   text-align: center;
   color: var(--color-text-mute);
-}
-
-@media (min-width: 40em) {
-
-  header,
-  main {
-    padding-inline: 2rem;
-  }
 }
 </style>

@@ -31,8 +31,8 @@ function editTask() {
   textInput.value.focus();
 }
 
-function saveTask(task) {
-  taskStore.saveNewTask(task);
+function saveTask(taskObject) {
+  taskStore.saveNewTask(taskObject);
   toggleEditingStatus();
   textInput.value.blur();
 }
@@ -40,15 +40,29 @@ function saveTask(task) {
 
 <template>
   <li :class="{ 'task--complete': task.isDone }" class="task">
-    <form class="task__form" @submit.prevent="saveTask(task)">
-      <input type="text" class="task__text" v-model="task.text" :disabled="!isEditingTask" ref="textInput" />
+    <form class="task__form" @submit.prevent>
+      <input
+        type="text"
+        class="task__text"
+        v-model="task.text"
+        :disabled="!isEditingTask"
+        ref="textInput"
+      />
 
       <div class="task__btn-container" v-if="isEditingTask">
-        <button type="submit" class="btn task__edit-done-btn" title="save new task">
+        <button
+          @click="saveTask(task)"
+          class="btn task__edit-done-btn"
+          title="save new task"
+        >
           <i class="fa-solid fa-floppy-disk"></i>
         </button>
 
-        <button class="btn task__edit-cancel-btn" title="cancel editing" @click="toggleEditingStatus">
+        <button
+          class="btn task__edit-cancel-btn"
+          title="cancel editing"
+          @click="toggleEditingStatus"
+        >
           <i class="fa-solid fa-xmark"></i>
         </button>
       </div>
@@ -58,17 +72,29 @@ function saveTask(task) {
           <i class="fa-solid fa-pencil"></i>
         </button>
 
-        <button class="btn task__delete-btn" title="delete task" @click="taskStore.deleteTask(task.id)">
+        <button
+          class="btn task__delete-btn"
+          title="delete task"
+          @click="taskStore.deleteTask(task.id)"
+        >
           <i class="fa-solid fa-trash"></i>
         </button>
 
-        <button :class="{ 'task__favorite-btn--fav': task.isFav }" class="btn task__favorite-btn"
-          title="mark as favorite task" @click="taskStore.favTask(task)">
+        <button
+          :class="{ 'task__favorite-btn--fav': task.isFav }"
+          class="btn task__favorite-btn"
+          title="mark as favorite task"
+          @click="taskStore.favTask(task)"
+        >
           <i class="fa-solid fa-heart"></i>
         </button>
 
-        <button :class="{ 'task__favorite-btn--complete': task.isDone }" class="btn task__done-btn"
-          title="mark task as done" @click="taskStore.completeTask(task)">
+        <button
+          :class="{ 'task__favorite-btn--complete': task.isDone }"
+          class="btn task__done-btn"
+          title="mark task as done"
+          @click="taskStore.completeTask(task)"
+        >
           <i class="fa-solid fa-check"></i>
         </button>
       </div>
@@ -139,10 +165,6 @@ function saveTask(task) {
   transition: color 0.4s ease;
 }
 
-.btn:hover {
-  color: var(--color-text-bright);
-}
-
 .task__favorite-btn--complete {
   color: var(--accent);
 }
@@ -152,7 +174,6 @@ function saveTask(task) {
 }
 
 @media (hover: hover) and (min-width: 40em) {
-
   .task__delete-btn,
   .task__edit-btn {
     opacity: 0;
@@ -182,7 +203,7 @@ function saveTask(task) {
     justify-content: space-evenly;
   }
 
-  .task__btn-container>* {
+  .task__btn-container > * {
     flex: 1;
     text-align: center;
   }
