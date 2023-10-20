@@ -30,8 +30,8 @@ function handleSignInWithGoogle() {
   authStore.handleUserSignInWithGoogle();
 }
 
-onMounted(() => {
-  authStore.init();
+onMounted(async () => {
+  await authStore.init();
 });
 </script>
 
@@ -48,28 +48,60 @@ onMounted(() => {
     <div class="sign-up-form-wrapper" v-show="signUp">
       <form class="sign-in-form" @submit.prevent="handleSignUp">
         <label for="email-signup">Email</label>
-        <input type="email" name="email" id="email-signup" placeholder="email" v-model="email" required />
+        <input
+          type="email"
+          name="email"
+          id="email-signup"
+          placeholder="email"
+          v-model="email"
+          required
+        />
 
         <label for="password-signup">Password</label>
-        <input type="password" name="password" id="password-signup" placeholder="password" v-model="password" required />
+        <input
+          type="password"
+          name="password"
+          id="password-signup"
+          placeholder="password"
+          v-model="password"
+          required
+        />
         <CTA type="submit" :center="true" :fill="true">Sign up</CTA>
       </form>
 
-      <CTA @click="handleSignInWithGoogle"><i class="fa-brands fa-google"></i> Sign in with Google</CTA>
+      <CTA @click="handleSignInWithGoogle"
+        ><i class="fa-brands fa-google"></i> Sign in with Google</CTA
+      >
     </div>
 
     <!-- log in for existing users -->
     <div class="log-in-form-wrapper" v-show="!signUp">
       <form @submit.prevent="handleLogIn">
         <label for="email-login">Email</label>
-        <input type="email" name="email" id="email-login" placeholder="email" v-model="email" required />
+        <input
+          type="email"
+          name="email"
+          id="email-login"
+          placeholder="email"
+          v-model="email"
+          required
+        />
 
         <label for="password-login">Password</label>
-        <input type="password" name="password" id="password-login" placeholder="password" v-model="password" required />
+        <input
+          type="password"
+          name="password"
+          id="password-login"
+          placeholder="password"
+          v-model="password"
+          required
+        />
 
         <CTA type="submit" :center="true" :fill="true">Log in</CTA>
       </form>
-      <CTA @click="handleLogInWithGoogle"><i class="fa-brands fa-google"></i> Log in with Google</CTA>
+      <CTA @click="handleLogInWithGoogle"
+        ><i class="fa-brands fa-google"></i> Log in with Google</CTA
+      >
     </div>
 
     <CTA @click="signUpOrLogIn">
