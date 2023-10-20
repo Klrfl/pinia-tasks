@@ -16,6 +16,7 @@ import {
   getRedirectResult,
   linkWithRedirect,
   deleteUser,
+  reauthenticateWithCredential,
 } from "firebase/auth";
 import router from "../router/index.js";
 import { useTaskStore } from "./TaskStore.js";
@@ -36,8 +37,8 @@ export const useAuthStore = defineStore("auth", {
         if (user) {
           this.user = user;
           if (user.isAnonymous) return;
-          this.isLoggedIn = true;
           router.push({ name: "home" });
+          this.isLoggedIn = true;
         } else {
           this.isLoggedIn = false;
           this.handleAnonSignUp(); // make anon account on first load
@@ -70,6 +71,7 @@ export const useAuthStore = defineStore("auth", {
       try {
         const authCredential = EmailAuthProvider.credential(email, password);
         await linkWithCredential(auth.currentUser, authCredential);
+        await this.init();
       } catch (err) {
         this.errorMessage = err.message;
         console.error(err.message);
@@ -106,22 +108,24 @@ export const useAuthStore = defineStore("auth", {
     async handleSignUserOut() {
       try {
         await signOut(auth);
-        this.user = null;
-        router.go();
+        router.push({ name: "sign-in" });
       } catch (err) {
         this.errorMessage = err.message;
         console.error(err.message);
       }
     },
 
-    async handleDeleteAccount() {
+    async handleDeleteAccount({ email, password }) {
       const taskStore = useTaskStore();
 
       try {
-        for (const task in taskStore.tasks) {
+        for (const task of taskStore.tasks) {
           await taskStore.deleteTask(task.id);
         }
-        await deleteUser(this.user);
+        const authCredential = EmailAuthProvider.credential(email, password);
+        await reauthenticateWithCredential(auth.currentUser, authCredential);
+        await deleteUser(auth.currentUser);
+        router.push({ name: "sign-in" });
       } catch (err) {
         console.error(err.message);
       }

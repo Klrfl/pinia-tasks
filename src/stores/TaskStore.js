@@ -59,12 +59,12 @@ export const useTaskStore = defineStore("taskStore", {
       await authStore.init();
 
       // check if user has already anonymously sign in (on startup, if they haven't logged in)
-      if (authStore.user) {
+      if (authStore.user !== null) {
         const userId = authStore.user.uid;
         const q = query(
           tasksRef,
           where("userId", "==", userId),
-          orderBy("createdAt")
+          orderBy("createdAt"),
         );
 
         try {

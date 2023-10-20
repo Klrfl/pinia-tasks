@@ -37,16 +37,32 @@ async function signOut() {
   }
 }
 
-const deleteAccountDialog = ref(null);
+const confirmAccountDeletionEl = ref(null);
+const reauthenticateEl = ref(null);
+const user = ref({
+  email: "",
+  password: "",
+});
 
-function openDeleteAccountDialog() {
-  deleteAccountDialog.value.showModal();
+function openConfirmAccountDeletionDialog() {
+  confirmAccountDeletionEl.value.showModal();
 }
 
-function deleteAccount() {
-  const returnValue = deleteAccountDialog.value.returnValue;
-  if (returnValue == "default") deleteAccountDialog.value.close();
-  else console.log("deleting account...");
+function openReauthenticationDialog() {
+  reauthenticateEl.value.showModal();
+}
+
+//TODO: make a form
+function confirmAccountDeletion() {
+  const returnValue = confirmAccountDeletionEl.value.returnValue;
+  if (returnValue == "default") confirmAccountDeletionEl.value.close();
+  else openReauthenticationDialog();
+}
+
+async function deleteAccount() {
+  const returnValue = reauthenticateEl.value.returnValue;
+  if (returnValue !== "default")
+    await authStore.handleDeleteAccount(user.value);
 }
 </script>
 
@@ -78,19 +94,23 @@ function deleteAccount() {
         <div class="user-popup" ref="userPopup">
           <p>Signed in as {{ authStore.user?.email }}</p>
           <CTA :center="true" :fill="true" @click="signOut">Sign out</CTA>
-          <CTA :center="true" :fill="true" @click="openDeleteAccountDialog">
+          <CTA
+            :center="true"
+            :fill="true"
+            @click="openConfirmAccountDeletionDialog"
+          >
             Delete account
           </CTA>
         </div>
       </button>
 
       <dialog
-        ref="deleteAccountDialog"
-        class="delete-account-dialog"
-        @close="deleteAccount"
+        ref="confirmAccountDeletionEl"
+        class="dialog delete-account-dialog"
+        @close="confirmAccountDeletion"
       >
         <form method="dialog">
-          <h1>THIS ACTION IS IRREVERSIBLE!</h1>
+          <h2>THIS ACTION IS IRREVERSIBLE!</h2>
           <p>
             Are you sure you want to delete your account?
             <strong> Your tasks will be deleted too. </strong>
@@ -98,6 +118,31 @@ function deleteAccount() {
 
           <CTA :fill="true" value="delete-account">Yes i am sure</CTA>
           <CTA :fill="true" value="default" autofocus>Nah nevermind</CTA>
+        </form>
+      </dialog>
+
+      <dialog
+        ref="reauthenticateEl"
+        class="dialog reauthenticate-dialog"
+        @close="deleteAccount"
+      >
+        <h2>Please put in your username and password</h2>
+        <form method="dialog" id="reauthenticate-form">
+          <label for="email">Email</label>
+          <input
+            type="text"
+            placeholder="email@example.com"
+            v-model="user.email"
+          />
+          <label for="password">Password</label>
+          <input
+            type="password"
+            placeholder="yoursupersecretpassword"
+            v-model="user.password"
+          />
+
+          <CTA :fill="true" value="delete-account">Delete Account</CTA>
+          <CTA :fill="true" value="default">Cancel</CTA>
         </form>
       </dialog>
     </div>
@@ -142,7 +187,7 @@ nav a:hover {
   display: block;
 }
 
-.delete-account-dialog {
+.dialog {
   border: 2px solid var(--color-border);
   margin: auto;
   padding: 2rem;
@@ -152,7 +197,7 @@ nav a:hover {
   max-width: 75ch;
 }
 
-.delete-account-dialog::backdrop {
+.dialog::backdrop {
   backdrop-filter: blur(0.5rem);
 }
 </style>
