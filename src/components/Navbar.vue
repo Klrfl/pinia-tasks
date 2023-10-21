@@ -73,8 +73,7 @@ async function deleteAccount() {
       <router-link
         class="btn"
         :to="{ name: 'sign-in' }"
-        v-if="!authStore.isLoggedIn"
-      >
+        v-if="!authStore.isLoggedIn">
         Sign in
       </router-link>
     </div>
@@ -88,8 +87,7 @@ async function deleteAccount() {
       <button
         class="btn nav-user-info"
         @click="toggleUserPopup"
-        v-if="authStore.isLoggedIn"
-      >
+        v-if="authStore.isLoggedIn">
         <i class="fa-solid fa-user"></i>
         <div class="user-popup" ref="userPopup">
           <p>Signed in as {{ authStore.user?.email }}</p>
@@ -97,8 +95,7 @@ async function deleteAccount() {
           <CTA
             :center="true"
             :fill="true"
-            @click="openConfirmAccountDeletionDialog"
-          >
+            @click="openConfirmAccountDeletionDialog">
             Delete account
           </CTA>
         </div>
@@ -107,8 +104,7 @@ async function deleteAccount() {
       <dialog
         ref="confirmAccountDeletionEl"
         class="dialog delete-account-dialog"
-        @close="confirmAccountDeletion"
-      >
+        @close="confirmAccountDeletion">
         <form method="dialog">
           <h2>THIS ACTION IS IRREVERSIBLE!</h2>
           <p>
@@ -124,22 +120,19 @@ async function deleteAccount() {
       <dialog
         ref="reauthenticateEl"
         class="dialog reauthenticate-dialog"
-        @close="deleteAccount"
-      >
+        @close="deleteAccount">
         <h2>Please put in your username and password</h2>
         <form method="dialog" id="reauthenticate-form">
           <label for="email">Email</label>
           <input
             type="text"
             placeholder="email@example.com"
-            v-model="user.email"
-          />
+            v-model="user.email" />
           <label for="password">Password</label>
           <input
             type="password"
             placeholder="yoursupersecretpassword"
-            v-model="user.password"
-          />
+            v-model="user.password" />
 
           <CTA :fill="true" value="delete-account">Delete Account</CTA>
           <CTA :fill="true" value="default">Cancel</CTA>

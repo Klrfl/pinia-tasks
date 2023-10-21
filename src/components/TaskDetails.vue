@@ -46,23 +46,20 @@ function saveTask(taskObject) {
         class="task__text"
         v-model="task.text"
         :disabled="!isEditingTask"
-        ref="textInput"
-      />
+        ref="textInput" />
 
       <div class="task__btn-container" v-if="isEditingTask">
         <button
           @click="saveTask(task)"
           class="btn task__edit-done-btn"
-          title="save new task"
-        >
+          title="save new task">
           <i class="fa-solid fa-floppy-disk"></i>
         </button>
 
         <button
           class="btn task__edit-cancel-btn"
           title="cancel editing"
-          @click="toggleEditingStatus"
-        >
+          @click="toggleEditingStatus">
           <i class="fa-solid fa-xmark"></i>
         </button>
       </div>
@@ -75,8 +72,7 @@ function saveTask(taskObject) {
         <button
           class="btn task__delete-btn"
           title="delete task"
-          @click="taskStore.deleteTask(task.id)"
-        >
+          @click="taskStore.deleteTask(task.id)">
           <i class="fa-solid fa-trash"></i>
         </button>
 
@@ -84,8 +80,7 @@ function saveTask(taskObject) {
           :class="{ 'task__favorite-btn--fav': task.isFav }"
           class="btn task__favorite-btn"
           title="mark as favorite task"
-          @click="taskStore.favTask(task)"
-        >
+          @click="taskStore.favTask(task)">
           <i class="fa-solid fa-heart"></i>
         </button>
 
@@ -93,8 +88,7 @@ function saveTask(taskObject) {
           :class="{ 'task__favorite-btn--complete': task.isDone }"
           class="btn task__done-btn"
           title="mark task as done"
-          @click="taskStore.completeTask(task)"
-        >
+          @click="taskStore.completeTask(task)">
           <i class="fa-solid fa-check"></i>
         </button>
       </div>

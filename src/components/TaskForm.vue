@@ -59,8 +59,7 @@ function getRandomTask() {
       class="task-form__text"
       type="text"
       :placeholder="getRandomTask()"
-      v-model="taskText"
-    />
+      v-model="taskText" />
     <!-- <input class="task-form__submit" type="submit" value="Add task" /> -->
     <CTA :center="true" class="task-form__submit">Add task</CTA>
   </form>

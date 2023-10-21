@@ -54,8 +54,7 @@ onMounted(async () => {
           id="email-signup"
           placeholder="email"
           v-model="email"
-          required
-        />
+          required />
 
         <label for="password-signup">Password</label>
         <input
@@ -64,8 +63,7 @@ onMounted(async () => {
           id="password-signup"
           placeholder="password"
           v-model="password"
-          required
-        />
+          required />
         <CTA type="submit" :center="true" :fill="true">Sign up</CTA>
       </form>
 
@@ -84,8 +82,7 @@ onMounted(async () => {
           id="email-login"
           placeholder="email"
           v-model="email"
-          required
-        />
+          required />
 
         <label for="password-login">Password</label>
         <input
@@ -94,8 +91,7 @@ onMounted(async () => {
           id="password-login"
           placeholder="password"
           v-model="password"
-          required
-        />
+          required />
 
         <CTA type="submit" :center="true" :fill="true">Log in</CTA>
       </form>
