@@ -2,6 +2,7 @@
 import { ref } from "vue";
 import { useTaskStore } from "../stores/TaskStore";
 import { useAuthStore } from "../stores/AuthStore";
+import CTA from "./CTA.vue";
 
 const authStore = useAuthStore();
 
@@ -60,7 +61,8 @@ function getRandomTask() {
       :placeholder="getRandomTask()"
       v-model="taskText"
     />
-    <input class="task-form__submit" type="submit" value="Add task" />
+    <!-- <input class="task-form__submit" type="submit" value="Add task" /> -->
+    <CTA :center="true" class="task-form__submit">Add task</CTA>
   </form>
 </template>
 
@@ -72,7 +74,6 @@ function getRandomTask() {
   display: flex;
   justify-content: center;
   align-items: center;
-  flex-wrap: wrap;
   gap: 0.5rem;
 }
 
@@ -86,12 +87,21 @@ function getRandomTask() {
 .task-form__text {
   border: 2px solid var(--color-border);
   background: var(--color-background-soft);
-  flex-grow: 1;
+  flex-grow: 7;
   text-align: left;
 }
 
 .task-form__submit {
   outline: 2px solid var(--accent);
+  margin: 0;
+  min-width: max-content;
   cursor: pointer;
+}
+
+@media screen and (max-width: 40em) {
+  .task-form {
+    flex-direction: column;
+    align-items: stretch;
+  }
 }
 </style>

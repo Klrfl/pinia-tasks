@@ -45,7 +45,7 @@ onMounted(async () => {
     <p>Get to your tasks. Pinia Tasks.</p>
 
     <!-- sign up form for new users -->
-    <div class="sign-up-form-wrapper" v-show="signUp">
+    <div class="form-wrapper sign-up-form-wrapper" v-show="signUp">
       <form class="sign-in-form" @submit.prevent="handleSignUp">
         <label for="email-signup">Email</label>
         <input
@@ -69,13 +69,13 @@ onMounted(async () => {
         <CTA type="submit" :center="true" :fill="true">Sign up</CTA>
       </form>
 
-      <CTA @click="handleSignInWithGoogle"
-        ><i class="fa-brands fa-google"></i> Sign in with Google</CTA
-      >
+      <CTA @click="handleSignInWithGoogle" :center="true" :fill="true">
+        <i class="fa-brands fa-google"></i> Sign in with Google
+      </CTA>
     </div>
 
     <!-- log in for existing users -->
-    <div class="log-in-form-wrapper" v-show="!signUp">
+    <div class="form-wrapper log-in-form-wrapper" v-show="!signUp">
       <form @submit.prevent="handleLogIn">
         <label for="email-login">Email</label>
         <input
@@ -99,9 +99,9 @@ onMounted(async () => {
 
         <CTA type="submit" :center="true" :fill="true">Log in</CTA>
       </form>
-      <CTA @click="handleLogInWithGoogle"
-        ><i class="fa-brands fa-google"></i> Log in with Google</CTA
-      >
+      <CTA @click="handleLogInWithGoogle" :center="true" :fill="true">
+        <i class="fa-brands fa-google"></i> Log in with Google
+      </CTA>
     </div>
 
     <CTA @click="signUpOrLogIn">
@@ -121,6 +121,10 @@ main {
   justify-content: center;
   align-items: center;
   flex-direction: column;
+}
+
+.form-wrapper {
+  min-width: 50ch;
 }
 
 form {

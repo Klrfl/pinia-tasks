@@ -13,9 +13,9 @@
   --vt-c-green: #8ae99c;
   --vt-c-indigo: #2c3e50;
 
-  --vt-c-divider-light-1: rgba(60, 60, 60, 0.29);
-  --vt-c-divider-light-2: rgba(60, 60, 60, 0.12);
-  --vt-c-divider-dark-1: rgba(84, 84, 84, 0.65);
+  --vt-c-divider-light-1: rgba(60, 60, 60, 0.45);
+  --vt-c-divider-light-2: rgba(60, 60, 60, 0.2);
+  --vt-c-divider-dark-1: rgba(90, 90, 90, 0.85);
   --vt-c-divider-dark-2: rgba(84, 84, 84, 0.48);
 
   --vt-c-text-light-1: var(--vt-c-indigo);
@@ -89,7 +89,8 @@ body {
 }
 
 h1 {
-  margin-block: 1.5rem;
+  margin-block: 0.5rem;
+  line-height: 0.9;
 }
 
 h2 {
@@ -111,7 +112,6 @@ form label {
 }
 
 form input {
-  padding: 0.5rem;
   width: 100%;
 }
 

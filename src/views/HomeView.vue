@@ -34,8 +34,7 @@ onMounted(async () => {
       <p v-if="authStore.user?.isAnonymous || isLoading">
         Welcome to Pinia Tasks!!
       </p>
-      <p v-else>Welcome, {{ authStore.user?.providerData[0].displayName }}!</p>
-
+      <p v-else>Welcome, {{ authStore.user?.email }}!</p>
       <TaskForm />
     </div>
   </header>

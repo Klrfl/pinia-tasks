@@ -117,8 +117,9 @@ function saveTask(taskObject) {
   position: relative;
 }
 
-.task--complete input[disabled] {
+.task--complete .task__text[disabled] {
   text-decoration: line-through;
+  filter: brightness(0.7);
 }
 
 .task::after {
@@ -137,6 +138,10 @@ function saveTask(taskObject) {
   padding: 1em;
   margin: 0;
   flex-grow: 1;
+}
+
+.task__text:disabled {
+  outline: none;
 }
 
 .task__form {
