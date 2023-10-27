@@ -14,6 +14,7 @@ const isLoading = ref(true);
 const showWhichtasks = ref("all");
 
 onMounted(async () => {
+  await authStore.init();
   await taskStore.getTasksFromFirestore();
   isLoading.value = false;
 });

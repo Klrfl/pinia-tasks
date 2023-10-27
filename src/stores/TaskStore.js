@@ -56,7 +56,6 @@ export const useTaskStore = defineStore("taskStore", {
   actions: {
     async getTasksFromFirestore() {
       const authStore = useAuthStore();
-      await authStore.init();
 
       // check if user has already anonymously sign in (on startup, if they haven't logged in)
       if (authStore.user !== null) {
