@@ -68,7 +68,7 @@ onMounted(async () => {
       </form>
 
       <CTA @click="handleSignInWithGoogle" :center="true" :fill="true">
-        <i class="fa-brands fa-google"></i> Sign in with Google
+        <i class="fa-brands fa-google"></i> Sign up with Google
       </CTA>
     </div>
 
