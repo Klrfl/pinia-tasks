@@ -55,14 +55,24 @@ function openReauthenticationDialog() {
 //TODO: make a form
 function confirmAccountDeletion() {
   const returnValue = confirmAccountDeletionEl.value.returnValue;
-  if (returnValue == "default") confirmAccountDeletionEl.value.close();
-  else openReauthenticationDialog();
+  if (returnValue === "default") {
+    confirmAccountDeletionEl.value.close();
+    return;
+  }
+
+  if (authStore.user?.providerData[0].providerId !== "password") {
+    authStore.handleDeleteAccount({});
+    return;
+  } else openReauthenticationDialog();
 }
 
 async function deleteAccount() {
-  const returnValue = reauthenticateEl.value.returnValue;
-  if (returnValue !== "default")
+  try {
     await authStore.handleDeleteAccount(user.value);
+    reauthenticateEl.value.close();
+  } catch (err) {
+    authStore.errorMessage = err.message;
+  }
 }
 </script>
 
@@ -117,25 +127,34 @@ async function deleteAccount() {
         </form>
       </dialog>
 
-      <dialog
-        ref="reauthenticateEl"
-        class="dialog reauthenticate-dialog"
-        @close="deleteAccount">
+      <dialog ref="reauthenticateEl" class="dialog reauthenticate-dialog">
         <h2>Please put in your username and password</h2>
-        <form method="dialog" id="reauthenticate-form">
+        <form
+          method="dialog"
+          id="reauthenticate-form"
+          @submit.prevent="deleteAccount">
           <label for="email">Email</label>
           <input
             type="text"
             placeholder="email@example.com"
-            v-model="user.email" />
+            v-model="user.email"
+            required />
+
           <label for="password">Password</label>
           <input
             type="password"
             placeholder="yoursupersecretpassword"
-            v-model="user.password" />
+            v-model="user.password"
+            required />
 
-          <CTA :fill="true" value="delete-account">Delete Account</CTA>
-          <CTA :fill="true" value="default">Cancel</CTA>
+          <CTA :fill="true">Delete Account</CTA>
+          <CTA :fill="true" @click.prevent="reauthenticateEl.close()">
+            Cancel
+          </CTA>
+
+          <p class="error" v-if="authStore.errorMessage">
+            {{ authStore.errorMessage }}
+          </p>
         </form>
       </dialog>
     </div>

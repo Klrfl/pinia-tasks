@@ -17,6 +17,7 @@ import {
   linkWithRedirect,
   deleteUser,
   reauthenticateWithCredential,
+  signInWithPopup,
 } from "firebase/auth";
 import router from "../router/index.js";
 import { useTaskStore } from "./TaskStore.js";
@@ -117,18 +118,34 @@ export const useAuthStore = defineStore("auth", {
 
     async handleDeleteAccount({ email, password }) {
       const taskStore = useTaskStore();
-
       try {
+        //delete tasks associated with user
         for (const task of taskStore.tasks) {
           await taskStore.deleteTask(task.id);
         }
-        const authCredential = EmailAuthProvider.credential(email, password);
-        await reauthenticateWithCredential(auth.currentUser, authCredential);
-        await deleteUser(auth.currentUser);
-        router.push({ name: "sign-in" });
       } catch (err) {
-        console.error(err.message);
+        throw new Error("error deleting tasks");
       }
+
+      if (this.user?.providerData[0].providerId == "password") {
+        try {
+          const authCredential = EmailAuthProvider.credential(email, password);
+          await reauthenticateWithCredential(auth.currentUser, authCredential);
+          await deleteUser(auth.currentUser);
+        } catch (err) {
+          throw new Error(err.message);
+        }
+      } else {
+        try {
+          const result = await signInWithPopup(auth, provider);
+          this.user = result.user;
+          await deleteUser(auth.currentUser);
+        } catch (err) {
+          throw new Error(err.message);
+        }
+      }
+
+      router.push({ name: "sign-in" });
     },
   },
 });
